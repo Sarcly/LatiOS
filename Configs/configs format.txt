@@ -1,0 +1,25 @@
+#this is a comment
+#each thing should be contained on one line
+
+
+#(explanation of a config value)stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff
+#this is a boolean
+B:isActive:true
+
+#this is a int
+I:number:4
+
+#this is a String
+S:name:"Jeff"  
+
+#this is a double
+D:age:754.75
+
+#Arrays can have any of the aformentioned values types
+#this is a Array of Strings
+A[S]:<"my", "name", "is", "jeff">
+
+
+
+
+  
