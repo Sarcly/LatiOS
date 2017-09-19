@@ -1,10 +1,12 @@
 package latiOS;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
-import latiOS.config.ConfigWrite;
+import latiOS.config.ConfigWriter;
 import latiOS.listeners.GuildMessageListener;
 import latiOS.listeners.MemberJoinListener;
 import latiOS.listeners.MemberLeaveListener;
@@ -21,9 +23,10 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			ConfigWrite.MakeConfig();
+			ConfigWriter cfg = new ConfigWriter(new FileOutputStream(new File("Configs/cfg.txt")));
+			cfg.makeHeader("my name jeff\nyeetyeet\nuhhhhhhhhhhhhhhhh yeet");
+			cfg.addBoolean("nameJeff", "is my name jeff\nwho knows?", true);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
