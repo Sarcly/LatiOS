@@ -80,7 +80,7 @@ public class ConfigWriter {
 	}
 	
 	public void addArray(String name, String description, String type, Object[] defaultValues) throws IOException {
-		
+		//TODO
 	}
 	
 }
