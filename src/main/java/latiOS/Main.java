@@ -1,7 +1,10 @@
 package latiOS;
 
+import java.io.IOException;
+
 import javax.security.auth.login.LoginException;
 
+import latiOS.config.ConfigWrite;
 import latiOS.listeners.GuildMessageListener;
 import latiOS.listeners.MemberJoinListener;
 import latiOS.listeners.MemberLeaveListener;
@@ -17,6 +20,12 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 public class Main {
 
 	public static void main(String[] args) {
+		try {
+			ConfigWrite.MakeConfig();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			JDA LatiOS = new JDABuilder(AccountType.BOT)
 					.setToken(args[0])
