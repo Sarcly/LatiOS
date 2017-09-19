@@ -61,20 +61,26 @@ public class ConfigWriter {
 		write(Boolean.toString(defaltValue), false, 2);
 	}
 	
-	public void addInt() {
-		//TODO
+	public void addInt(String name, String description, int defaultValue) throws IOException {
+		write(description, true);
+		write("I:"+name+":", false, 0);
+		write(Integer.toString(defaultValue), false, 2);
 	}
 	
-	public void addDouble() {
-		//TODO
+	public void addDouble(String name, String description, double defaultValue) throws IOException {
+		write(description, true);
+		write("D:"+name+":", false, 0);
+		write(Double.toString(defaultValue), false, 2);
 	}
 	
-	public void addString() {
-		//TODO
+	public void addString(String name, String description, String defaultValue) throws IOException {
+		write(description, true);
+		write("S:"+name+":", false, 0);
+		write(defaultValue, false, 2);
 	}
 	
-	public void addArray() {
-		//TODO
+	public void addArray(String name, String description, String type, Object[] defaultValues) throws IOException {
+		
 	}
 	
 }

@@ -17,7 +17,7 @@ D:age:754.75
 
 #Arrays can have any of the aformentioned values types
 #this is a Array of Strings
-A[S]:<"my", "name", "is", "jeff">
+A[S]:<"my","name","is","jeff">
 
 
 
