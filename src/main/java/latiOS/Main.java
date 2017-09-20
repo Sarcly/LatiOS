@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.security.auth.login.LoginException;
 
 import latiOS.config.ConfigWriter;
+import latiOS.config.ConfigWriter.ConfigDataTypes;
 import latiOS.listeners.GuildMessageListener;
 import latiOS.listeners.MemberJoinListener;
 import latiOS.listeners.MemberLeaveListener;
@@ -25,7 +26,8 @@ public class Main {
 		try {
 			ConfigWriter cfg = new ConfigWriter(new FileOutputStream(new File("Configs/cfg.txt")));
 			cfg.makeHeader("my name jeff\nyeetyeet\nuhhhhhhhhhhhhhhhh yeet");
-			cfg.addBoolean("nameJeff", "is my name jeff\nwho knows?", true);
+			Object[] f = {true, false, true, false, false};
+			cfg.addArray("test", "this is a thing", ConfigDataTypes.BOOLEAN, f);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

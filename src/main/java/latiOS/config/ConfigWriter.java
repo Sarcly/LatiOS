@@ -79,8 +79,38 @@ public class ConfigWriter {
 		write(defaultValue, false, 2);
 	}
 	
-	public void addArray(String name, String description, String type, Object[] defaultValues) throws IOException {
-		//TODO
+	public void addArray(String name, String description, ConfigDataTypes type, Object[] defaultValues) throws IOException {
+		write(description, true);
+		String t = "";
+		switch (type) {
+			case STRING:
+				t = "S:";
+				break;
+			case INT:
+				t = "I:";
+				break;
+			case DOUBLE:
+				t = "D:";
+				break;
+			case BOOLEAN:
+				t = "B:";
+				break;
+			default:
+				type=ConfigDataTypes.STRING;
+				t = "S:";
+				break;
+		}
+		write(t+name+":<", false, 0);
+		for (Object i : defaultValues) {
+			write(i.toString()+",", false, 0);
+		}
+		write(">",false,2);
 	}
 	
+	public enum ConfigDataTypes {
+		STRING,
+		INT,
+		DOUBLE,
+		BOOLEAN
+	}
 }
