@@ -54,35 +54,31 @@ public class ConfigWriter {
 		write(dateFormat.format(date), true);
 		write(msg, true, 2);
 	}
-	@Deprecated
-	public void addBoolean(ConfigValues name, String description, boolean defaltValue) throws IOException {
+	public void addBoolean(String name, String description, boolean defaltValue) throws IOException {
 		write(description, true);
-		write("B:"+name.getName()+"=", false, 0);
+		write("B:"+name+"=", false, 0);
 		write(Boolean.toString(defaltValue), false, 2);
 	}
-	@Deprecated
-	public void addInt(ConfigValues name, String description, int defaultValue) throws IOException {
+	public void addInt(String name, String description, int defaultValue) throws IOException {
 		write(description, true);
-		write("I:"+name.getName()+"=", false, 0);
+		write("I:"+name+"=", false, 0);
 		write(Integer.toString(defaultValue), false, 2);
 	}
-	@Deprecated
-	public void addDouble(ConfigValues name, String description, double defaultValue) throws IOException {
+	public void addDouble(String name, String description, double defaultValue) throws IOException {
 		write(description, true);
-		write("D:"+name.getName()+"=", false, 0);
+		write("D:"+name+"=", false, 0);
 		write(Double.toString(defaultValue), false, 2);
 	}
-	@Deprecated
-	public void addString(ConfigValues name, String description, String defaultValue) throws IOException {
+	public void addString(String name, String description, String defaultValue) throws IOException {
 		write(description, true);
-		write("S:"+name.getName()+"=", false, 0);
+		write("S:"+name+"=", false, 0);
 		write(defaultValue, false, 2);
 	}
 	
-	public void addValue(ConfigValues value) throws IOException {
-		write(value.getDescription(),true);
-		write(value.getType().getPrefix()+value.getName()+"=",false,0);
-		
+	public void addValue(ConfigValues option, Object value) throws IOException {
+		write(option.getDescription(),true);
+		write(option.getType().getPrefix()+option.getName()+"=",false,0);
+		write(value.toString(),false,2);
 	}
 	
 	public void addArray(ConfigValues name, String description, ConfigDataTypes type, Object[] defaultValues) throws IOException {
