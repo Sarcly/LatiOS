@@ -54,53 +54,59 @@ public class ConfigWriter {
 		write(dateFormat.format(date), true);
 		write(msg, true, 2);
 	}
-	
-	public void addBoolean(String name, String description, boolean defaltValue) throws IOException {
+	@Deprecated
+	public void addBoolean(ConfigValues name, String description, boolean defaltValue) throws IOException {
 		write(description, true);
-		write("B:"+name+":", false, 0);
+		write("B:"+name.getName()+"=", false, 0);
 		write(Boolean.toString(defaltValue), false, 2);
 	}
-	
-	public void addInt(String name, String description, int defaultValue) throws IOException {
+	@Deprecated
+	public void addInt(ConfigValues name, String description, int defaultValue) throws IOException {
 		write(description, true);
-		write("I:"+name+":", false, 0);
+		write("I:"+name.getName()+"=", false, 0);
 		write(Integer.toString(defaultValue), false, 2);
 	}
-	
-	public void addDouble(String name, String description, double defaultValue) throws IOException {
+	@Deprecated
+	public void addDouble(ConfigValues name, String description, double defaultValue) throws IOException {
 		write(description, true);
-		write("D:"+name+":", false, 0);
+		write("D:"+name.getName()+"=", false, 0);
 		write(Double.toString(defaultValue), false, 2);
 	}
-	
-	public void addString(String name, String description, String defaultValue) throws IOException {
+	@Deprecated
+	public void addString(ConfigValues name, String description, String defaultValue) throws IOException {
 		write(description, true);
-		write("S:"+name+":", false, 0);
+		write("S:"+name.getName()+"=", false, 0);
 		write(defaultValue, false, 2);
 	}
 	
-	public void addArray(String name, String description, ConfigDataTypes type, Object[] defaultValues) throws IOException {
+	public void addValue(ConfigValues value) throws IOException {
+		write(value.getDescription(),true);
+		write(value.getType().getPrefix()+value.getName()+"=",false,0);
+		
+	}
+	
+	public void addArray(ConfigValues name, String description, ConfigDataTypes type, Object[] defaultValues) throws IOException {
 		write(description, true);
 		String t = "";
 		switch (type) {
-			case STRING:
+			case STRING_ARRAY:
 				t = "A[S]:";
 				break;
-			case INT:
+			case INT_ARRAY:
 				t = "A[I]:";
 				break;
-			case DOUBLE:
+			case DOUBLE_ARRAY:
 				t = "A[D]:";
 				break;
-			case BOOLEAN:
+			case BOOLEAN_ARRAY:
 				t = "A[B]:";
 				break;
 			default:
-				type=ConfigDataTypes.STRING;
+				type=ConfigDataTypes.STRING_ARRAY;
 				t = "A[S]:";
 				break;
 		}
-		write(t+name+":<", false, 0);
+		write(t+name.getName()+"=<", false, 0);
 		for (int i=0;i<defaultValues.length;i++) {
 			write(defaultValues[i].toString(), false, 0);
 			if (i != defaultValues.length-1) {
@@ -108,12 +114,5 @@ public class ConfigWriter {
 			}
 		}
 		write(">",false,2);
-	}
-	
-	public enum ConfigDataTypes {
-		STRING,
-		INT,
-		DOUBLE,
-		BOOLEAN
 	}
 }
