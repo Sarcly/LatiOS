@@ -24,14 +24,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			ConfigWriter cfg = new ConfigWriter(new FileOutputStream(new File("Configs/cfg.txt")));
-			cfg.makeHeader("my name jeff\nyeetyeet\nuhhhhhhhhhhhhhhhh yeet");
-			Object[] f = {true, false, true, false, false};
-			cfg.addArray("test", "this is a thing", ConfigDataTypes.BOOLEAN, f);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
 			JDA LatiOS = new JDABuilder(AccountType.BOT)
 					.setToken(args[0])
 					.addEventListener(new GuildMessageListener())

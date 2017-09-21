@@ -101,8 +101,11 @@ public class ConfigWriter {
 				break;
 		}
 		write(t+name+":<", false, 0);
-		for (Object i : defaultValues) {
-			write(i.toString()+",", false, 0);
+		for (int i=0;i<defaultValues.length;i++) {
+			write(defaultValues[i].toString(), false, 0);
+			if (i != defaultValues.length-1) {
+				write(",", false, 0);
+			}
 		}
 		write(">",false,2);
 	}
