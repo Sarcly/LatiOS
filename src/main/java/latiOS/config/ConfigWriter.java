@@ -84,20 +84,20 @@ public class ConfigWriter {
 		String t = "";
 		switch (type) {
 			case STRING:
-				t = "S:";
+				t = "A[S]:";
 				break;
 			case INT:
-				t = "I:";
+				t = "A[I]:";
 				break;
 			case DOUBLE:
-				t = "D:";
+				t = "A[D]:";
 				break;
 			case BOOLEAN:
-				t = "B:";
+				t = "A[B]:";
 				break;
 			default:
 				type=ConfigDataTypes.STRING;
-				t = "S:";
+				t = "A[S]:";
 				break;
 		}
 		write(t+name+":<", false, 0);
