@@ -23,10 +23,13 @@ public class ConfigReader {
 			if (line.startsWith("B:")||line.startsWith("I:")||line.startsWith("D:")||line.startsWith("S:")||line.startsWith("A[S]:")||line.startsWith("A[I]:")||line.startsWith("A[B]:")||line.startsWith("A[D}:")) {
 				Pattern p = Pattern.compile("(?<=:).+?(?==)");
 				Matcher m = p.matcher(line);
-				for (ConfigValues i: ConfigValues.values()) {
-					System.out.println(m.group(1));
-					if (i.getName().equals(m.group(1))) {
-						//TODO
+				if (m.find()) {
+					for (ConfigValues i: ConfigValues.values()) {
+						System.out.print(m.group()+"==");
+						System.out.println(i.getName());
+						if (i.getName().equals(m.group(0))) {
+							System.out.println("MY NAME JJJJJEEEEEFFFFFFFFFFFFFFFFFF");
+						}
 					}
 				}
 			}

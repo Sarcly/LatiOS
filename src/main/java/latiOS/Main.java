@@ -1,12 +1,15 @@
 package latiOS;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
 import latiOS.config.ConfigDataTypes;
+import latiOS.config.ConfigReader;
 import latiOS.config.ConfigWriter;
 import latiOS.listeners.GuildMessageListener;
 import latiOS.listeners.MemberJoinListener;
@@ -28,25 +31,32 @@ public class Main {
 			fop = new FileOutputStream(new File("Configs/cfg.cfg"));
 			ConfigWriter cfg = new ConfigWriter(fop);
 			cfg.makeHeader("YEET");
-			/*
-			cfg.addBoolean("", "This is bool", true);
-			cfg.addDouble("Double", "This is Double", 37628.3828);
-			cfg.addInt("Int", "This is int", 42);
-			cfg.addString("string", "This is String", "my name jeff");
+			cfg.addBoolean("bool1", "This is bool", true);
+			cfg.addDouble("double1", "This is Double", 37628.3828);
+			cfg.addInt("int1", "This is int", 42);
+			cfg.addString("string1", "This is String", "my name jeff");
 			Object[] b = {true,false,true};
-			cfg.addArray("BoolArray", "this is bool array", ConfigDataTypes.BOOLEAN, b);
+			cfg.addArray("BoolArray", "this is bool array", ConfigDataTypes.BOOLEAN_ARRAY, b);
 			Object[] d = {721.23,77.2,10.0,1.32};
-			cfg.addArray("DoubleArray", "this is double array", ConfigDataTypes.DOUBLE, d);
+			cfg.addArray("DoubleArray", "this is double array", ConfigDataTypes.DOUBLE_ARRAY, d);
 			Object[] i = {8382,3828,573,1};
-			cfg.addArray("IntArray", "This is int array", ConfigDataTypes.INT, i);
+			cfg.addArray("IntArray", "This is int array", ConfigDataTypes.INT_ARRAY, i);
 			Object[] s = {"my","name","jeff"};
-			cfg.addArray("StringArray", "this is string array", ConfigDataTypes.STRING, s);
-			*/
+			cfg.addArray("StringArray", "this is string array", ConfigDataTypes.STRING_ARRAY, s);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+		FileInputStream fis;
 		try {
+			fis = new FileInputStream(new File("Configs/cfg.cfg"));
+			ConfigReader cfgr = new ConfigReader(fis);
+			cfgr.read();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		/*try {
 			JDA LatiOS = new JDABuilder(AccountType.BOT)
 					.setToken(args[0])
 					.addEventListener(new GuildMessageListener())
@@ -66,7 +76,7 @@ public class Main {
 		} catch (RateLimitedException e) {
 			System.err.println("Rate Limit Exception. Sending messages to fast");
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 

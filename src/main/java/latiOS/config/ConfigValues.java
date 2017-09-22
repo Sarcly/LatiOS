@@ -4,10 +4,10 @@ public enum ConfigValues {
 	BotToken("BotToken", ConfigDataTypes.STRING,"",null),
 	BotName("BotName", ConfigDataTypes.STRING,"",null),
 	//Testing values
-	bool1("BotName", ConfigDataTypes.BOOLEAN,"",true),
-	string1("BotName", ConfigDataTypes.STRING,"","jeff"),
-	double1("BotName", ConfigDataTypes.DOUBLE,"",69.69),
-	int1("BotName", ConfigDataTypes.INT,"",42);
+	bool1("bool1", ConfigDataTypes.BOOLEAN,"",true),
+	string1("string1", ConfigDataTypes.STRING,"","jeff"),
+	double1("double1", ConfigDataTypes.DOUBLE,"",69.69),
+	int1("int1", ConfigDataTypes.INT,"",42);
 	
 	private final String name;
 	private final ConfigDataTypes type;

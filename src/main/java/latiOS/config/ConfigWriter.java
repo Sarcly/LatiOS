@@ -111,4 +111,35 @@ public class ConfigWriter {
 		}
 		write(">",false,2);
 	}
+	
+	public void addArray(String name, String description, ConfigDataTypes type, Object[] defaultValues) throws IOException {
+		write(description, true);
+		String t = "";
+		switch (type) {
+			case STRING_ARRAY:
+				t = "A[S]:";
+				break;
+			case INT_ARRAY:
+				t = "A[I]:";
+				break;
+			case DOUBLE_ARRAY:
+				t = "A[D]:";
+				break;
+			case BOOLEAN_ARRAY:
+				t = "A[B]:";
+				break;
+			default:
+				type=ConfigDataTypes.STRING_ARRAY;
+				t = "A[S]:";
+				break;
+		}
+		write(t+name+"=<", false, 0);
+		for (int i=0;i<defaultValues.length;i++) {
+			write(defaultValues[i].toString(), false, 0);
+			if (i != defaultValues.length-1) {
+				write(",", false, 0);
+			}
+		}
+		write(">",false,2);
+	}
 }
