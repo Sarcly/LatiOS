@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class ConfigReader {
 
 	private FileInputStream configFile;
-	private HashMap<ConfigValues, Object> config = new HashMap<>();
+	private HashMap<ConfigValues, Object> config = new HashMap<ConfigValues, Object>();
 	
 	public ConfigReader(FileInputStream file) {
 		configFile = file;
