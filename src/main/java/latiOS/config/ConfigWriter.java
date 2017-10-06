@@ -48,98 +48,26 @@ public class ConfigWriter {
 		config.write(w.getBytes());
 	}
 	
-	public void makeHeader(String msg) throws IOException {
+	protected void makeHeader(String msg) throws IOException {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		write(dateFormat.format(date), true);
 		write(msg, true, 2);
 	}
-	public void addBoolean(String name, String description, boolean defaltValue) throws IOException {
-		write(description, true);
-		write("B:"+name+"=", false, 0);
-		write(Boolean.toString(defaltValue), false, 2);
-	}
-	public void addInt(String name, String description, int defaultValue) throws IOException {
-		write(description, true);
-		write("I:"+name+"=", false, 0);
-		write(Integer.toString(defaultValue), false, 2);
-	}
-	public void addDouble(String name, String description, double defaultValue) throws IOException {
-		write(description, true);
-		write("D:"+name+"=", false, 0);
-		write(Double.toString(defaultValue), false, 2);
-	}
-	public void addString(String name, String description, String defaultValue) throws IOException {
-		write(description, true);
-		write("S:"+name+"=", false, 0);
-		write(defaultValue, false, 2);
-	}
 	
-	public void addValue(ConfigValues option, Object value) throws IOException {
-		write(option.getDescription(),true);
-		write(option.getType().getPrefix()+option.getName()+"=",false,0);
-		write(value.toString(),false,2);
-	}
-	
-	public void addArray(ConfigValues name, String description, ConfigDataTypes type, Object[] defaultValues) throws IOException {
-		write(description, true);
-		String t = "";
-		switch (type) {
-			case STRING_ARRAY:
-				t = "A[S]:";
-				break;
-			case INT_ARRAY:
-				t = "A[I]:";
-				break;
-			case DOUBLE_ARRAY:
-				t = "A[D]:";
-				break;
-			case BOOLEAN_ARRAY:
-				t = "A[B]:";
-				break;
-			default:
-				type=ConfigDataTypes.STRING_ARRAY;
-				t = "A[S]:";
-				break;
-		}
-		write(t+name.getName()+"=<", false, 0);
-		for (int i=0;i<defaultValues.length;i++) {
-			write(defaultValues[i].toString(), false, 0);
-			if (i != defaultValues.length-1) {
-				write(",", false, 0);
+	protected void addValue(ConfigValue cv, boolean isArray) throws IOException {
+		write(cv.getDescription(),true);
+		write(cv.getType().getPrefix()+cv.getName()+"=",false,0);
+		if (isArray) {
+			for (int i=0;i<(cv.getValue()==null?cv.getDefaultValues().length:cv.getValues().length);i++) {
+				write((cv.getValue()==null?cv.getDefaultValues():cv.getValues())[i].toString(), false, 0);
+				if (i != (cv.getValue()==null?cv.getDefaultValues().length:cv.getValues().length)-1) {
+					write(",", false, 0);
+				}
 			}
+			write(">",false,2);
+		}else {
+			write((String)(cv.getValue()==null?cv.getDefaultValue():cv.getValue()),false,2);
 		}
-		write(">",false,2);
-	}
-	
-	public void addArray(String name, String description, ConfigDataTypes type, Object[] defaultValues) throws IOException {
-		write(description, true);
-		String t = "";
-		switch (type) {
-			case STRING_ARRAY:
-				t = "A[S]:";
-				break;
-			case INT_ARRAY:
-				t = "A[I]:";
-				break;
-			case DOUBLE_ARRAY:
-				t = "A[D]:";
-				break;
-			case BOOLEAN_ARRAY:
-				t = "A[B]:";
-				break;
-			default:
-				type=ConfigDataTypes.STRING_ARRAY;
-				t = "A[S]:";
-				break;
-		}
-		write(t+name+"=<", false, 0);
-		for (int i=0;i<defaultValues.length;i++) {
-			write(defaultValues[i].toString(), false, 0);
-			if (i != defaultValues.length-1) {
-				write(",", false, 0);
-			}
-		}
-		write(">",false,2);
 	}
 }
