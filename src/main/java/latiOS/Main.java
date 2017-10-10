@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
+import latiOS.config.Config;
 import latiOS.config.ConfigDataTypes;
 import latiOS.config.ConfigReader;
 import latiOS.config.ConfigWriter;
@@ -26,7 +27,14 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 public class Main {
 
 	public static void main(String[] args) {
-		
+		Config cfg = new Config();
+		try {
+			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", "namejeff");
+			cfg.makeConfig();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		/*try {
 			JDA LatiOS = new JDABuilder(AccountType.BOT)

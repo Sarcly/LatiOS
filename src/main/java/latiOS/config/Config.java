@@ -22,6 +22,11 @@ public class Config {
 		makeConfig();
 	}
 	
+	public void addValue(String name, ConfigDataTypes type, String description, Object defalutValue) throws IOException {
+		values.put(name, new ConfigValue(name, type, description, defalutValue));
+		makeConfig();
+	}
+	
 	public void changeValue(String name, Object newValue) throws ConfigValueNotFoundException, IOException {
 		if (!values.containsKey(name)) {
 			throw new ConfigValueNotFoundException("Value "+name+" does not exist");

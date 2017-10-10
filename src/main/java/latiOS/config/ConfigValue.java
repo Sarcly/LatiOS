@@ -1,71 +1,34 @@
 package latiOS.config;
 
-public class ConfigValue {
+public class ConfigValue extends IConfigValue{
 
-	private final String name;
-	private final ConfigDataTypes type;
-	private final String description;
-	private final Object defaultValue;
-	private final Object[] defaultValues;
-	private Object value;
-	private Object[] values;
-	private final boolean isArray;
+	private final String defaultValue;
+	private String value;
 	
-	protected ConfigValue(String name, ConfigDataTypes type, String description, Object defaultValue, Object value) {
-		this.name=name;
-		this.type=type;
-		this.description=description;
-		this.defaultValue=defaultValue;
+	protected ConfigValue(String name, ConfigDataTypes type, String description, boolean isArray, String defalutValue) {
+		super(name, type, description, isArray);
+		this.defaultValue=defalutValue;
+	}
+	
+	protected ConfigValue(String name, ConfigDataTypes type, String description, boolean isArray, String defalutValue, String value) {
+		super(name, type, description, isArray);
+		this.defaultValue=defalutValue;
 		this.value=value;
-		this.defaultValues=null;
-		this.values=null;
-		this.isArray=false;
 	}
 	
-	protected ConfigValue(String name, ConfigDataTypes type, String description, Object[] defaultValues, Object[] values) {
-		this.name=name;
-		this.type=type;
-		this.description=description;
-		this.defaultValues=defaultValues;
-		this.values=values;
-		this.defaultValue=null;
-		this.value=null;
-		this.isArray=true;
-	}
-	
-	protected String getName() {
-		return name;
-	}
-	
-	protected ConfigDataTypes getType() {
-		return type;
-	}
-	
-	protected String getDescription() {
-		return description;
-	}
-	
-	protected Object getDefaultValue() {
-		return defaultValue;
-	}
-	
-	protected Object[] getDefaultValues() {
-		return defaultValues;
-	}
-	
-	protected Object getValue() {
+	@Override
+	protected String getValue() {
 		return value;
 	}
-	
-	protected Object[] getValues() {
-		return values;
+
+	@Override
+	protected String getDefaultValue() {
+		return defaultValue;
+	}
+
+	@Override
+	protected void changeValue() {
+		
 	}
 	
-	protected boolean isArray() {
-		return isArray;
-	}
-	
-	protected void changeValue(Object v) {
-		value = v;
-	}
 }
