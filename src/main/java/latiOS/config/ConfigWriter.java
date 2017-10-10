@@ -55,19 +55,21 @@ public class ConfigWriter {
 		write(msg, true, 2);
 	}
 	
-	protected void addValue(ConfigValue cv, boolean isArray) throws IOException {
+	protected void addValue(ConfigValue cv) throws IOException {
 		write(cv.getDescription(),true);
 		write(cv.getType().getPrefix()+cv.getName()+"=",false,0);
-		if (isArray) {
-			for (int i=0;i<(cv.getValue()==null?cv.getDefaultValues().length:cv.getValues().length);i++) {
-				write((cv.getValue()==null?cv.getDefaultValues():cv.getValues())[i].toString(), false, 0);
-				if (i != (cv.getValue()==null?cv.getDefaultValues().length:cv.getValues().length)-1) {
-					write(",", false, 0);
-				}
+		write(cv.getValue()==null?cv.getDefaultValue():cv.getValue(),false,2);
+	}
+	
+	protected void addValue(ArrayConfigValue cv) throws IOException {
+		write(cv.getDescription(),true);
+		write(cv.getType().getPrefix()+cv.getName()+"=<",false,0);
+		for (int i=0;i<(cv.getValues()==null?cv.getDefaultValues().length:cv.getValues().length);i++) {
+			write((cv.getValues()==null?cv.getDefaultValues():cv.getValues())[i].toString(), false, 0);
+			if (i != (cv.getValues()==null?cv.getDefaultValues().length:cv.getValues().length)-1) {
+				write(",", false, 0);
 			}
-			write(">",false,2);
-		}else {
-			write((String)(cv.getValue()==null?cv.getDefaultValue():cv.getValue()),false,2);
 		}
+		write(">",false,2);
 	}
 }

@@ -13,7 +13,7 @@ public class ReadyListener implements EventListener {
 	public void onEvent(Event event) {
 		if (event instanceof ReadyEvent) {
 			if (event.getJDA().getGuilds().size()>1) {
-				log.log(new MultiServerException());
+				log.fatal(new MultiServerException());
 				event.getJDA().shutdown();
 				System.exit(3);
 			}

@@ -16,19 +16,16 @@ public class ConfigValue extends IConfigValue{
 		this.value=value;
 	}
 	
-	@Override
 	protected String getValue() {
 		return value;
 	}
 
-	@Override
 	protected String getDefaultValue() {
 		return defaultValue;
 	}
 
-	@Override
-	protected void changeValue() {
-		
+	protected void changeValue(String newValue) {
+		this.value=newValue;
 	}
 	
 }

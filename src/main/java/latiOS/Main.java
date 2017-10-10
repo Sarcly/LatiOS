@@ -29,14 +29,14 @@ public class Main {
 	public static void main(String[] args) {
 		Config cfg = new Config();
 		try {
-			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", "namejeff");
+			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", false, "namejeff");
+			String[] f = {"my","name","jeff"};
+			cfg.addValue("arraytest", ConfigDataTypes.STRING_ARRAY, "UHHHHHHHHHHHH", true, f);
 			cfg.makeConfig();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		/*try {
+		try {
 			JDA LatiOS = new JDABuilder(AccountType.BOT)
 					.setToken(args[0])
 					.addEventListener(new GuildMessageListener())
@@ -56,8 +56,6 @@ public class Main {
 		} catch (RateLimitedException e) {
 			System.err.println("Rate Limit Exception. Sending messages to fast");
 			e.printStackTrace();
-		}*/
-
+		}
 	}
-
 }

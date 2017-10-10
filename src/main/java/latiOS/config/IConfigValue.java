@@ -29,10 +29,4 @@ public abstract class IConfigValue {
 	protected boolean isArray() {
 		return isArray;
 	}
-	
-	protected abstract String getValue();
-	
-	protected abstract String getDefaultValue();
-	
-	protected abstract void changeValue(String newValue);
 }

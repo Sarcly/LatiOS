@@ -11,27 +11,47 @@ import latiOS.exceptions.ConfigValueNotFoundException;
 
 public class Config {
 
-	private static HashMap<String, ConfigValue> values;
+	private static HashMap<String, IConfigValue> values = new HashMap<>();
 	
 	public Config() {
 		super();
 	}
 	
-	public void addValue(String name, ConfigDataTypes type, String description, Object defalutValue, Object value) throws IOException {
-		values.put(name, new ConfigValue(name, type, description, defalutValue, value));
+	public void addValue(String name, ConfigDataTypes type, String description, boolean isArray, String defaultValue, String value) throws IOException {
+		values.put(name, new ConfigValue(name, type, description, isArray, defaultValue, value));
 		makeConfig();
 	}
 	
-	public void addValue(String name, ConfigDataTypes type, String description, Object defalutValue) throws IOException {
-		values.put(name, new ConfigValue(name, type, description, defalutValue));
+	public void addValue(String name, ConfigDataTypes type, String description, boolean isArray, String defaultValue) throws IOException {
+		values.put(name, new ConfigValue(name, type, description, isArray, defaultValue));
 		makeConfig();
 	}
 	
-	public void changeValue(String name, Object newValue) throws ConfigValueNotFoundException, IOException {
+	public void addValue(String name, ConfigDataTypes type, String description, boolean isArray, String[] defaultValue, String[] value) throws IOException {
+		values.put(name, new ArrayConfigValue(name, type, description, isArray, defaultValue, value));
+		makeConfig();
+	}
+	
+	public void addValue(String name, ConfigDataTypes type, String description, boolean isArray, String[] defaultValue) throws IOException {
+		values.put(name, new ArrayConfigValue(name, type, description, isArray, defaultValue));
+		makeConfig();
+	}
+	
+	
+	public void changeValue(String name, String newValue) throws ConfigValueNotFoundException, IOException {
 		if (!values.containsKey(name)) {
 			throw new ConfigValueNotFoundException("Value "+name+" does not exist");
 		}else {
-			values.get(name).changeValue(newValue);
+			((ConfigValue)values.get(name)).changeValue(newValue);
+			makeConfig();
+		}
+	}
+	
+	public void changeValue(String name, String[] newValue) throws ConfigValueNotFoundException, IOException {
+		if (!values.containsKey(name)) {
+			throw new ConfigValueNotFoundException("Value "+name+" does not exist");
+		}else {
+			((ArrayConfigValue)values.get(name)).changeValue(newValue);
 			makeConfig();
 		}
 	}
@@ -45,15 +65,23 @@ public class Config {
 		}
 	}
 	
-	public Object get(String name) throws ConfigValueNotFoundException {
+	public String getValue(String name) throws ConfigValueNotFoundException {
 		if (!values.containsKey(name)) {
 			throw new ConfigValueNotFoundException("Value "+name+" does not exist");
 		}else {
-			return values.get(name).getValue();				
+			return ((ConfigValue)values.get(name)).getValue();				
+		}	
+	}
+	
+	public String[] getValues(String name) throws ConfigValueNotFoundException {
+		if (!values.containsKey(name)) {
+			throw new ConfigValueNotFoundException("Value "+name+" does not exist");
+		}else {
+			return ((ArrayConfigValue)values.get(name)).getValues();				
 		}	
 	}
 
-	public Map<String, ConfigValue> getAll() {
+	public Map<String, IConfigValue> getAll() {
 		return Collections.unmodifiableMap(values);
 	}
 	
@@ -62,7 +90,12 @@ public class Config {
 		cw.makeHeader("Test");
 		values.forEach((k,v)->{
 			try {
-				cw.addValue(v,v.isArray());
+				if (v.isArray()) {
+					cw.addValue(((ArrayConfigValue)v));
+				}else{
+					cw.addValue(((ConfigValue)v));
+				}
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
