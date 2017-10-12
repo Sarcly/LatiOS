@@ -1,17 +1,12 @@
 package latiOS;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
 import latiOS.config.Config;
 import latiOS.config.ConfigDataTypes;
-import latiOS.config.ConfigReader;
-import latiOS.config.ConfigWriter;
+import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.listeners.GuildMessageListener;
 import latiOS.listeners.MemberJoinListener;
 import latiOS.listeners.MemberLeaveListener;
@@ -27,16 +22,8 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 public class Main {
 
 	public static void main(String[] args) {
-		Config cfg = new Config();
 		try {
-			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", false, "namejeff");
-			String[] f = {"my","name","jeff"};
-			cfg.addValue("arraytest", ConfigDataTypes.STRING_ARRAY, "UHHHHHHHHHHHH", true, f);
-			cfg.makeConfig();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
+			@SuppressWarnings("unused")
 			JDA LatiOS = new JDABuilder(AccountType.BOT)
 					.setToken(args[0])
 					.addEventListener(new GuildMessageListener())
@@ -55,6 +42,18 @@ public class Main {
 			e.printStackTrace();
 		} catch (RateLimitedException e) {
 			System.err.println("Rate Limit Exception. Sending messages to fast");
+			e.printStackTrace();
+		}
+		Config cfg = new Config();
+		try {
+			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", false, "namejeff");
+			String[] f = {"my","name","jeff"};
+			cfg.addValue("arraytest", ConfigDataTypes.STRING_ARRAY, "UHHHHHHHHHHHH", true, f);
+			
+			cfg.changeValue("test", "AHHHHHHHHHHHHHHHHHHH");
+			System.out.println(cfg.getValue("test"));
+			cfg.makeConfig();
+		} catch (IOException | ConfigValueNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
