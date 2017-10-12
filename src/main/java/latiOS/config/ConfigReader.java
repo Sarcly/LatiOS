@@ -9,9 +9,12 @@ import java.util.regex.Pattern;
 public class ConfigReader {
 
 	private FileInputStream configFile;
-	private HashMap<ConfigValue, String> config = new HashMap<ConfigValue, String>();
 	
 	public ConfigReader(FileInputStream file) {
 		configFile = file;
+	}
+	
+	protected void readAll() {
+		Scanner s = new Scanner(configFile);
 	}
 }
