@@ -65,10 +65,10 @@ public class ConfigWriter {
 					write(",", false, 0);
 				}
 			}
-			write(">",false,2);
+			write(">;",false,2);
 		}else {
 			write(cv.getType().getPrefix()+cv.getName()+"=",false,0);
-			write(cv.getValue()==null?cv.getDefaultValue():cv.getValue(),false,2);
+			write(cv.getValue()==null?cv.getDefaultValue():cv.getValue()+";",false,2);
 		}
 		
 	}

@@ -2,6 +2,8 @@ package latiOS.config;
 
 import java.io.FileInputStream;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import latiOS.exceptions.ConfigFormatException;
 import net.dv8tion.jda.core.utils.SimpleLog;
@@ -32,9 +34,14 @@ public class ConfigReader {
 		log.info(temp);
 	}
 	
-	private boolean isValid(String line) { 
+	private boolean isValid(String line) {
 		if (!(line.isEmpty()||line.startsWith("#")||line.startsWith(ConfigDataTypes.BOOLEAN.getPrefix())||line.startsWith(ConfigDataTypes.BOOLEAN_ARRAY.getPrefix())||line.startsWith(ConfigDataTypes.DOUBLE.getPrefix())||line.startsWith(ConfigDataTypes.DOUBLE_ARRAY.getPrefix())||line.startsWith(ConfigDataTypes.INT.getPrefix())||line.startsWith(ConfigDataTypes.INT_ARRAY.getPrefix())||line.startsWith(ConfigDataTypes.STRING.getPrefix())||line.startsWith(ConfigDataTypes.STRING_ARRAY.getPrefix()))) {
 			return false;
+		}
+		if (line.startsWith(ConfigDataTypes.STRING.getPrefix())) {
+			if (!Pattern.compile("^A?\\[?[ABSD]{1}\\]?:{1}[a-zA-Z]+={1}[a-zA-Z]+;{1}$").matcher(line).matches()){
+				return false;
+			}
 		}
 		return true;
 	}

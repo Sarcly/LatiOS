@@ -48,7 +48,7 @@ public class Main {
 			System.err.println("Rate Limit Exception. Sending messages to fast");
 			e.printStackTrace();
 		}
-		/*Config cfg = new Config();
+		Config cfg = new Config();
 		try {
 			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", false, "namejeff");
 			String[] f = {"my","name","jeff"};
@@ -56,7 +56,7 @@ public class Main {
 			cfg.changeValue("test", "AHHHHHHHHHHHHHHHHHHH");
 		} catch (IOException | ConfigValueNotFoundException e) {
 			e.printStackTrace();
-		}*/
+		}
 		try {
 			ConfigReader c = new ConfigReader(new FileInputStream(new File("Configs/cfg.cfg")));
 			c.readAll();
