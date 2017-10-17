@@ -44,11 +44,14 @@ public class ConfigReader {
 				return false;
 			}
 		}else if (line.startsWith(ConfigDataTypes.INT.getPrefix())) {
-			if (!Pattern.compile("^I{1}:{1}[a-zA-Z]+={1}[0-9]+;{1}$").matcher(line).matches()) {
+			if (!Pattern.compile("^I{1}:{1}[a-zA-Z]+={1}-{0,1}[0-9]+;{1}$").matcher(line).matches()) {
 				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
 				return false;
-			}else if (Long.parseLong(line.replaceAll("^I{1}:{1}[A-Za-z]+={1}", "").trim().replaceAll(";$", ""))> Integer.MAX_VALUE) {
+			}else if (Long.parseLong(line.replaceAll("^I{1}:{1}[A-Za-z]+={1}", "").trim().replaceAll(";$", ""))>Integer.MAX_VALUE) {
 				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Integer on line "+cur+" is too large"));
+				return false;
+			}else if (Long.parseLong(line.replaceAll("^I{1}:{1}[A-Za-z]+={1}", "").trim().replaceAll(";$", ""))<Integer.MIN_VALUE) {
+				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Integer on line "+cur+" is too small"));
 				return false;
 			}
 		}else if (line.startsWith(ConfigDataTypes.BOOLEAN.getPrefix())) {
@@ -57,17 +60,51 @@ public class ConfigReader {
 				return false;
 			}
 		}else if (line.startsWith(ConfigDataTypes.DOUBLE.getPrefix())) {
-			if (!Pattern.compile("^D{1}:{1}[a-zA-Z]+={1}[0-9]+.{1}[0-9]+;{1}$").matcher(line).matches()) {
+			if (!Pattern.compile("^D{1}:{1}[a-zA-Z]+={1}-{0,1}[0-9]+\\.{1}[0-9]+;{1}$").matcher(line).matches()) {
 				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
 				return false;
 			}else if (Double.parseDouble(line.replaceAll("^D{1}:{1}[a-zA-Z]+={1}", "").trim().replaceAll(";$", ""))>Double.MAX_VALUE) {
 				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Double on line "+cur+" is too large"));
 				return false;
+			}else if (Double.parseDouble(line.replaceAll("^D{1}:{1}[a-zA-Z]+={1}", "").trim().replaceAll(";$", ""))<-Double.MAX_VALUE) {
+				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Double on line "+cur+" is too small"));
+				return false;
 			}
 		}else if (line.startsWith(ConfigDataTypes.STRING_ARRAY.getPrefix())) {
-			if (!Pattern.compile("^A{1}\\[{1}S{1}\\]{1}:{1}[A-Za-z]+={1}<{1}([a-zA-Z]+,?)+>{1};{1}").matcher(line).matches()) {
+			if (!Pattern.compile("^A{1}\\[{1}S{1}\\]{1}:{1}[A-Za-z]+={1}<{1}([a-zA-Z]+,?)+>{1};{1}$").matcher(line).matches()) {
 				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
 				return false;
+			}
+		}else if (line.startsWith(ConfigDataTypes.INT_ARRAY.getPrefix())) {
+			if (!Pattern.compile("^A{1}\\[{1}I{1}\\]{1}:{1}[A-Za-z]+={1}<{1}(-{0,1}[0-9]+,?)+>{1};{1}$").matcher(line).matches()) {
+				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
+				return false;
+			} else {  
+				String[] i = line.replaceAll("^A{1}\\[{1}I{1}\\]{1}:{1}[A-Za-z]+={1}<{1}", "").trim().replaceAll(">{1};{1}$", "").split(",");
+				for (int k=0;k<i.length;k++) {
+					if (Long.parseLong(i[k])>Integer.MAX_VALUE||Long.parseLong(i[k])<Integer.MIN_VALUE) {
+						log.fatal(new ConfigFormatException("Config File is formated incorrectly: Double in array on line "+cur+" is too large or small"));
+						return false;
+					}
+				}
+			}
+		}else if (line.startsWith(ConfigDataTypes.BOOLEAN_ARRAY.getPrefix())) {
+			if (!Pattern.compile("^A{1}\\[{1}B{1}\\]{1}:{1}[A-Za-z]+={1}<{1}((true|false),?)+>{1};{1}$").matcher(line).matches()) {
+				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
+				return false;
+			}
+		}else if (line.startsWith(ConfigDataTypes.DOUBLE_ARRAY.getPrefix())) {
+			if (!Pattern.compile("^A{1}\\[{1}D{1}\\]{1}:{1}[A-Za-z]+={1}<{1}(-{0,1}[0-9]+\\.{1}[0-9]+,?)+>{1};{1}$").matcher(line).matches()) {
+				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
+				return false;
+			} else {
+				String[] i = line.replaceAll("^A{1}\\[{1}D{1}\\]{1}:{1}[A-Za-z]+={1}<{1}", "").trim().replaceAll(">{1};{1}$", "").split(",");
+				for (int k=0;k<i.length;k++) {
+					if (Double.parseDouble(i[k])>Double.MAX_VALUE||Double.parseDouble(i[k])<-Double.MAX_VALUE) {
+						log.fatal(new ConfigFormatException("Config File is formated incorrectly: Double in array on line "+cur+" is too large or small"));
+						return false;
+					}
+				}
 			}
 		}
 		return true;

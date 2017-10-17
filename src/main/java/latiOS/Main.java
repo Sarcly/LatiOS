@@ -51,12 +51,12 @@ public class Main {
 		Config cfg = new Config();
 		try {
 			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", false, "namejeff");
-			String[] f = {"my","name","jeff"};
-			cfg.addValue("arraytest", ConfigDataTypes.STRING_ARRAY, "UHHHHHHHHHHHH", true, f);
+			String[] f = {"11.1","-75757575.3939","9832748923789.3883"};
+			cfg.addValue("arraytest", ConfigDataTypes.DOUBLE_ARRAY, "UHHHHHHHHHHHH", true, f);
 			cfg.changeValue("test", "AHHHHHHHHHHHHHHHHHHH");
-			cfg.addValue("toobig", ConfigDataTypes.INT, "This int is TOO THICC", false, "999999999");
+			cfg.addValue("toobig", ConfigDataTypes.INT, "This int is TOO THICC", false, "-2147483648");
 			cfg.addValue("buno", ConfigDataTypes.BOOLEAN, "B U N O", false, "false");
-			cfg.addValue("litty", ConfigDataTypes.DOUBLE, "Litty Double", false, "2929.321");
+			cfg.addValue("litty", ConfigDataTypes.DOUBLE, "Litty Double", false, "-2929.321");
 		} catch (IOException | ConfigValueNotFoundException e) {
 			e.printStackTrace();
 		}
