@@ -51,7 +51,7 @@ public class Main {
 		Config cfg = new Config();
 		try {
 			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", false, "namejeff");
-			String[] f = {"11.1","-75757575.3939","9832748923789.3883"};
+			String[] f = {"11.1","-757575756.3939","9832748923789.3883"};
 			cfg.addValue("arraytest", ConfigDataTypes.DOUBLE_ARRAY, "UHHHHHHHHHHHH", true, f);
 			cfg.changeValue("test", "AHHHHHHHHHHHHHHHHHHH");
 			cfg.addValue("toobig", ConfigDataTypes.INT, "This int is TOO THICC", false, "-2147483648");
