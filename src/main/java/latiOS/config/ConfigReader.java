@@ -1,10 +1,13 @@
 package latiOS.config;
 
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import latiOS.exceptions.ConfigFormatException;
+import latiOS.exceptions.ErrorCodes;
 import net.dv8tion.jda.core.utils.SimpleLog;
 
 public class ConfigReader {
@@ -17,19 +20,21 @@ public class ConfigReader {
 		configFile = file;
 	}
 	
-	public void readAll() {
+	public void readAll() throws IOException {
 		Scanner s = new Scanner(configFile);
 		int cur=0;
-		String temp="\n";
+		String line="";
 		while (s.hasNextLine()) {
 			cur++;
-			String line=s.nextLine();
+			String lastLine=line;
+			line=s.nextLine();
 			if (!isValid(line,cur)) {
-				System.exit(3);
+				System.exit(ErrorCodes.CONFIG_ERROR.getValue());
 			}
-			temp+=line+"\n";
+			if (!(line.startsWith("#")||line.isEmpty())) {
+				addToConfig(line,lastLine);
+			}
 		}
-		log.info(temp);
 		s.close();
 	}
 	
@@ -39,7 +44,7 @@ public class ConfigReader {
 			return false;
 		}
 		if (line.startsWith(ConfigDataTypes.STRING.getPrefix())) {
-			if (!Pattern.compile("^S{1}:{1}[a-zA-Z]+={1}[a-zA-Z0-9]+;{1}$").matcher(line).matches()){
+			if (!Pattern.compile("^S{1}:{1}[a-zA-Z]+={1}[a-zA-Z0-9 ]+;{1}$").matcher(line).matches()){
 				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
 				return false;
 			}
@@ -71,7 +76,7 @@ public class ConfigReader {
 				return false;
 			}
 		}else if (line.startsWith(ConfigDataTypes.STRING_ARRAY.getPrefix())) {
-			if (!Pattern.compile("^A{1}\\[{1}S{1}\\]{1}:{1}[A-Za-z]+={1}<{1}([a-zA-Z]+,?)+>{1};{1}$").matcher(line).matches()) {
+			if (!Pattern.compile("^A{1}\\[{1}S{1}\\]{1}:{1}[A-Za-z]+={1}<{1}([a-zA-Z0-9 ]+,?)+>{1};{1}$").matcher(line).matches()) {
 				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
 				return false;
 			}
@@ -109,4 +114,27 @@ public class ConfigReader {
 		}
 		return true;
 	}
+	
+	private void addToConfig(String line, String lastLine) throws IOException {
+		Config cfg = new Config();
+		boolean isArray=line.replaceAll("^A?\\[?[SIDB]{1}\\]?:{1}[A-Za-z]+=?", "").startsWith("<")&&line.replaceAll(";{1}$", "").endsWith(">");
+		String[] values= {""};
+		if (isArray) {
+			values = line.replaceAll("^A?\\[?[SIDB]{1}\\]?:{1}[A-Za-z]+=?<?", "").trim().replaceAll(">?;{1}$", "").split(",");
+		}else {
+			values[0] = line.replaceAll("^A?\\[?[SIDB]{1}\\]?:{1}[A-Za-z]+=?<?", "").trim().replaceAll(">?;{1}$", "");
+		}
+		String name = line.replaceAll("^A?\\[?[DIBS]{1}\\]?:{1}", "").replaceAll("={1}<?[A-Za-z0-9\\.,-]+>?;{1}$", "");
+		ConfigDataTypes type = ConfigDataTypes.checkType(line.replaceAll("[A-Za-z]+={1}<?[A-Za-z0-9\\.,-]+>?;{1}$", ""));
+		String description=lastLine.replace("#", "");
+		/*TODO
+		 *Change how description saving works. The problem is that descriptions can be multi line and i need to save that
+		 *Also, Need to save default values as well
+		 *probably will save the as '{DEFAULT_VALUE}' after the normal value
+		 */
+		System.out.println(isArray+", "+Arrays.toString(values)+", "+name+", "+type);
+		cfg.addValue(name, type, description, isArray, values);
+	}
+	
 }
+

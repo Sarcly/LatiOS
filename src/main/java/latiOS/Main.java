@@ -50,21 +50,20 @@ public class Main {
 		}
 		Config cfg = new Config();
 		try {
-			cfg.addValue("test", ConfigDataTypes.STRING, "jeff", false, "namejeff");
-			String[] f = {"11.1","-757575756.3939","9832748923789.3883"};
-			cfg.addValue("arraytest", ConfigDataTypes.DOUBLE_ARRAY, "UHHHHHHHHHHHH", true, f);
-			cfg.changeValue("test", "AHHHHHHHHHHHHHHHHHHH");
-			cfg.addValue("toobig", ConfigDataTypes.INT, "This int is TOO THICC", false, "-2147483648");
-			cfg.addValue("buno", ConfigDataTypes.BOOLEAN, "B U N O", false, "false");
-			cfg.addValue("litty", ConfigDataTypes.DOUBLE, "Litty Double", false, "-2929.321");
-		} catch (IOException | ConfigValueNotFoundException e) {
+			cfg.addValue("StringTest", ConfigDataTypes.STRING, "TestString", false, "This is a test");
+			cfg.addValue("IntTest", ConfigDataTypes.INT, "MAX VALUE", false, "2147483647");
+			String[] ints = {"This","is","a","test"};
+			cfg.addValue("StringArrayTest", ConfigDataTypes.STRING_ARRAY, "String Array Test", true, ints);
+			String[] doubles = {"82374.282","99999.999999999999","9243987238479823.89234894","1.0"};
+			cfg.addValue("DoubleArrayTest", ConfigDataTypes.DOUBLE_ARRAY, "Double Array", true, doubles);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
 			ConfigReader c = new ConfigReader(new FileInputStream(new File("Configs/cfg.cfg")));
 			c.readAll();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
 	}
