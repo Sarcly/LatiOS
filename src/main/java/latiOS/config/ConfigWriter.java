@@ -70,7 +70,6 @@ public class ConfigWriter {
 			write(cv.getType().getPrefix()+cv.getName()+"=",false,0);
 			write(cv.getValue()==null?cv.getDefaultValue():cv.getValue(),false,0);
 			write(";",false,2);
-		}
-		
+		}	
 	}
 }

@@ -124,17 +124,14 @@ public class ConfigReader {
 		}else {
 			values[0] = line.replaceAll("^A?\\[?[SIDB]{1}\\]?:{1}[A-Za-z]+=?<?", "").trim().replaceAll(">?;{1}$", "");
 		}
-		String name = line.replaceAll("^A?\\[?[DIBS]{1}\\]?:{1}", "").replaceAll("={1}<?[A-Za-z0-9\\.,-]+>?;{1}$", "");
-		ConfigDataTypes type = ConfigDataTypes.checkType(line.replaceAll("[A-Za-z]+={1}<?[A-Za-z0-9\\.,-]+>?;{1}$", ""));
+		String name = line.replaceAll("^A?\\[?[DIBS]{1}\\]?:{1}", "").replaceAll("={1}<?[A-Za-z0-9\\., -]+>?;{1}$", "");
+		ConfigDataTypes type = ConfigDataTypes.checkType(line.replaceAll("[A-Za-z]+={1}<?[A-Za-z0-9\\., -]+>?;{1}$", ""));
 		String description=lastLine.replace("#", "");
 		/*TODO
 		 *Change how description saving works. The problem is that descriptions can be multi line and i need to save that
 		 *Also, Need to save default values as well
 		 *probably will save the as '{DEFAULT_VALUE}' after the normal value
 		 */
-		System.out.println(isArray+", "+Arrays.toString(values)+", "+name+", "+type);
 		cfg.addValue(name, type, description, isArray, values);
-	}
-	
+	}	
 }
-
