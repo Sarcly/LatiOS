@@ -21,6 +21,7 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.core.utils.SimpleLog;
 
 public class Main {
 
@@ -62,12 +63,6 @@ public class Main {
 			ConfigReader c = new ConfigReader(new FileInputStream(new File("Configs/cfg.cfg")));
 			c.readAll();
 		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-		try {
-			System.out.println(cfg.getValue("yes"));
-		} catch (ConfigValueNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
