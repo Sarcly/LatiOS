@@ -44,7 +44,7 @@ public class ConfigReader {
 			return false;
 		}
 		if (line.startsWith(ConfigDataTypes.STRING.getPrefix())) {
-			if (!Pattern.compile("^S{1}:{1}[a-zA-Z]+={1}[a-zA-Z0-9 ]+;{1}$").matcher(line).matches()){
+			if (!Pattern.compile("^S{1}:{1}[a-zA-Z]+={1}[a-zA-Z0-9 !]+;{1}$").matcher(line).matches()){
 				log.fatal(new ConfigFormatException("Config File is formated incorrectly: Line "+cur+" is not valid"));
 				return false;
 			}

@@ -14,7 +14,7 @@ public class Config {
 
 	private static HashMap<String, ConfigValue> values = new HashMap<>();
 	
-	private static boolean wait = false;
+	private static File cfgFile = new File("Configs/config.cfg");
 	
 	public Config() {
 		super();
@@ -127,7 +127,7 @@ public class Config {
 	}
 	
 	public void makeConfig() throws IOException {
-		ConfigWriter cw = new ConfigWriter(new FileOutputStream(new File("Configs/cfg.cfg")));
+		ConfigWriter cw = new ConfigWriter(new FileOutputStream(cfgFile));
 		cw.makeHeader("Test");
 		values.forEach((k,v)->{
 			try {
@@ -139,28 +139,14 @@ public class Config {
 	}
 	
 	public boolean configExsists() {
-		File cfg = new File("Configs/config.cfg");
-		if (cfg.exists()) {
+		if (cfgFile.exists()) {
 			return true;
 		}else {
 			return false;
 		}
 	}
-	
-	public boolean waitForGui(boolean wait){
-		while (wait) {
-			//TODO do this better
-			System.out.println("waiting...");
-		}
-		return true;
-	} 
-	
-	public void release() {
-		wait = false;
-	}
-	
-	public boolean openGui() {
+
+	public void openGui() {
 		Gui.start(null);
-		return true;
 	}
 }
