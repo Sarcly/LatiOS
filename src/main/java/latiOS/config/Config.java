@@ -8,10 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import latiOS.exceptions.ConfigValueNotFoundException;
+import latiOS.gui.Gui;
 
 public class Config {
 
 	private static HashMap<String, ConfigValue> values = new HashMap<>();
+	
+	private static boolean wait = false;
 	
 	public Config() {
 		super();
@@ -133,5 +136,31 @@ public class Config {
 				e.printStackTrace();
 			}
 		});	
-	}	
+	}
+	
+	public boolean configExsists() {
+		File cfg = new File("Configs/config.cfg");
+		if (cfg.exists()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean waitForGui(boolean wait){
+		while (wait) {
+			//TODO do this better
+			System.out.println("waiting...");
+		}
+		return true;
+	} 
+	
+	public void release() {
+		wait = false;
+	}
+	
+	public boolean openGui() {
+		Gui.start(null);
+		return true;
+	}
 }

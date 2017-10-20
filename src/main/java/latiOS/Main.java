@@ -7,9 +7,7 @@ import java.io.IOException;
 import javax.security.auth.login.LoginException;
 
 import latiOS.config.Config;
-import latiOS.config.ConfigDataTypes;
 import latiOS.config.ConfigReader;
-import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.listeners.GuildMessageListener;
 import latiOS.listeners.MemberJoinListener;
 import latiOS.listeners.MemberLeaveListener;
@@ -21,11 +19,16 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.utils.SimpleLog;
 
 public class Main {
 
 	public static void main(String[] args) {
+		Config cfg = new Config();
+		if (!cfg.configExsists()) {
+			cfg.openGui();
+			cfg.waitForGui(true);
+			System.out.println("Done");
+		}
 		try {
 			@SuppressWarnings("unused")
 			JDA LatiOS = new JDABuilder(AccountType.BOT)
@@ -48,7 +51,6 @@ public class Main {
 			System.err.println("Rate Limit Exception. Sending messages to fast");
 			e.printStackTrace();
 		}
-		Config cfg = new Config();
 		/*try {
 			cfg.addValue("IntTest", ConfigDataTypes.INT, "MAX VALUE", false, "2147483647");
 			String[] ints = {"This","is","a","test"};
