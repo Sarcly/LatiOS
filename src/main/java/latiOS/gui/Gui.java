@@ -24,6 +24,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import latiOS.config.Config;
 import latiOS.config.ConfigDataTypes;
+import org.slf4j.event.Level;
 
 public class Gui {
 
@@ -38,6 +39,8 @@ public class Gui {
 	private JComboBox logToTextChannel;
 	private JButton btnDone;
 	private JTextField botToken;
+	private JComboBox LoggingLevel;
+	private JLabel lblLoggingLevel;
 
 	public static void start(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -87,10 +90,10 @@ public class Gui {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(26dlu;default)"),
 				ColumnSpec.decode("max(31dlu;default)"),
-				ColumnSpec.decode("max(41dlu;default)"),
+				ColumnSpec.decode("max(63dlu;default)"),
 				ColumnSpec.decode("max(46dlu;default)"),
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
+				ColumnSpec.decode("max(44dlu;default):grow"),
+				ColumnSpec.decode("max(53dlu;default)"),
 				ColumnSpec.decode("max(89dlu;default)"),},
 			new RowSpec[] {
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -114,10 +117,19 @@ public class Gui {
 		lblBotToken.setHorizontalAlignment(SwingConstants.CENTER);
 		FirstTimeSetupWindow.getContentPane().add(lblBotToken, "4, 4, left, bottom");
 		
+		lblLoggingLevel = new JLabel("Logging Level");
+		lblLoggingLevel.setHorizontalAlignment(SwingConstants.LEFT);
+		lblLoggingLevel.setVerticalAlignment(SwingConstants.BOTTOM);
+		FirstTimeSetupWindow.getContentPane().add(lblLoggingLevel, "9, 4, 2, 1");
+		
 		botToken = new JTextField();
 		botToken.setHorizontalAlignment(SwingConstants.LEFT);
 		FirstTimeSetupWindow.getContentPane().add(botToken, "4, 5, 4, 1, fill, default");
 		botToken.setColumns(10);
+		
+		LoggingLevel = new JComboBox();
+		LoggingLevel.setModel(new DefaultComboBoxModel(new String[] {"All", "Debug", "Warn", "Error", "Fatal", "Info", "Trace", "Off"}));
+		FirstTimeSetupWindow.getContentPane().add(LoggingLevel, "9, 5, 2, 1, fill, default");
 
 		lblBotName = new JLabel("Bot Name");
 		lblBotName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -163,6 +175,10 @@ public class Gui {
 					cfg.addValue("botName", ConfigDataTypes.STRING, "The name of the bot account", false, botName.getText());
 					cfg.addValue("commandPrefix", ConfigDataTypes.STRING, "This is the prifix that LatiOS will look for in messages to signify a command", false, commandPrefix.getText());
 					cfg.addValue("logToTextChannel", ConfigDataTypes.BOOLEAN, "If enabled, LatiOS will output all logged messages to a private text channel in the server.", false, logToTextChannel.getSelectedItem().toString().equals("Enabled")?"true":"false");
+
+					switch (LoggingLevel.getSelectedItem()) {
+					case "TEst":
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

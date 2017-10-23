@@ -1,6 +1,7 @@
 package latiOS.listeners;
 
 import latiOS.exceptions.MultiServerException;
+import latiOS.util.ChatBox;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -15,8 +16,9 @@ public class ReadyListener implements EventListener {
 			if (event.getJDA().getGuilds().size()>1) {
 				log.fatal(new MultiServerException());
 				event.getJDA().shutdown();
-				System.exit(3);
 			}
+			ChatBox chat = new ChatBox(event);
+			chat.sendGuildMessagePlain("dsa");
 		}
 	}
 }
