@@ -1,5 +1,7 @@
 package latiOS;
 
+import java.io.IOException;
+
 import javax.security.auth.login.LoginException;
 
 import latiOS.config.Config;
@@ -21,9 +23,11 @@ public class Main {
 	public static void main(String[] args) {
 		try {
 			loadConfigs();
-		} catch (ConfigValueNotFoundException e) {
+		} catch (ConfigValueNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
+		@SuppressWarnings("unused")
+		JDA LatiOS = startBot(buildBot());
 	}
 	
 	public static JDABuilder buildBot() {
@@ -42,16 +46,16 @@ public class Main {
 		try {
 			return jda.setToken(cfg.getValue("botToken")).buildAsync();
 		} catch (LoginException | IllegalArgumentException | RateLimitedException | ConfigValueNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public static void loadConfigs() throws ConfigValueNotFoundException {
+	public static void loadConfigs() throws ConfigValueNotFoundException, IOException {
 		Config cfg = new Config();
 		if (!cfg.configExsists()) {
 			cfg.openGui();
 		}
+		cfg.readConfig();
 	}
 }

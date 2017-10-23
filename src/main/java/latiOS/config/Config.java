@@ -1,6 +1,7 @@
 package latiOS.config;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
@@ -148,5 +149,10 @@ public class Config {
 
 	public void openGui() {
 		Gui.start(null);
+	}
+	
+	public void readConfig() throws IOException {
+		ConfigReader cfgr = new ConfigReader(new FileInputStream(cfgFile));
+		cfgr.readAll();
 	}
 }
