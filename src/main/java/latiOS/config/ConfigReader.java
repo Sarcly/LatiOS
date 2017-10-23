@@ -132,7 +132,7 @@ public class ConfigReader {
 		 *Also, Need to save default values as well
 		 *probably will save the as '{DEFAULT_VALUE}' after the normal value
 		 */
-		System.out.println("Config Option "+name+" added with value "+Arrays.toString(values));
+		log.debug("Config Option "+name+" added with value "+Arrays.toString(values));
 		cfg.addValue(name, type, description, isArray, values);
 	}	
 }
