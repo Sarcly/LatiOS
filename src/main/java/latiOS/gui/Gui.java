@@ -176,9 +176,6 @@ public class Gui {
 					cfg.addValue("commandPrefix", ConfigDataTypes.STRING, "This is the prifix that LatiOS will look for in messages to signify a command", false, commandPrefix.getText());
 					cfg.addValue("logToTextChannel", ConfigDataTypes.BOOLEAN, "If enabled, LatiOS will output all logged messages to a private text channel in the server.", false, logToTextChannel.getSelectedItem().toString().equals("Enabled")?"true":"false");
 
-					switch (LoggingLevel.getSelectedItem()) {
-					case "TEst":
-					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
