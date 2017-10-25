@@ -24,7 +24,6 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import latiOS.config.Config;
 import latiOS.config.ConfigDataTypes;
-import org.slf4j.event.Level;
 
 public class Gui {
 
@@ -39,6 +38,7 @@ public class Gui {
 	private JComboBox logToTextChannel;
 	private JButton btnDone;
 	private JTextField botToken;
+	@SuppressWarnings("rawtypes")
 	private JComboBox LoggingLevel;
 	private JLabel lblLoggingLevel;
 
