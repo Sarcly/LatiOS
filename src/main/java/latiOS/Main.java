@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
+import org.slf4j.event.Level;
+
 import latiOS.config.Config;
 import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.listeners.GuildMessageListener;
@@ -17,20 +19,30 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.core.utils.SimpleLog;
 
 public class Main {
 
+	private static final SimpleLog log = SimpleLog.getLog("LatiOS");
+	
 	public static void main(String[] args) {
 		try {
 			loadConfigs();
 		} catch (ConfigValueNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
+		try {
+			setLogLevel(new Config().getValue("loggingLevel"));
+		} catch (ConfigValueNotFoundException e) {
+			e.printStackTrace();
+		}
 		@SuppressWarnings("unused")
 		JDA LatiOS = startBot(buildBot());
+		log.debug("Bot Started");
 	}
 	
 	public static JDABuilder buildBot() {
+		log.debug("Bot Built");
 		return new JDABuilder(AccountType.BOT)
 				.addEventListener(new GuildMessageListener())
 				.addEventListener(new PrivateMessageListener())
@@ -49,6 +61,18 @@ public class Main {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static void setLogLevel(String level) {
+		switch (level) {
+		case "All":log.setLevel(Level.TRACE);return;
+		case "Debug":log.setLevel(Level.DEBUG);return;
+		case "Warn":log.setLevel(Level.WARN);return;
+		case "Fatal":log.setLevel(Level.ERROR);return;
+		case "Info":log.setLevel(Level.INFO);return;
+		case "Trace":log.setLevel(Level.TRACE);return;
+		default: log.setLevel(Level.INFO);return;
+		}
 	}
 	
 	public static void loadConfigs() throws ConfigValueNotFoundException, IOException {

@@ -17,8 +17,10 @@ public class ReadyListener implements EventListener {
 				log.fatal(new MultiServerException());
 				event.getJDA().shutdown();
 			}
-			ChatBox chat = new ChatBox(event);
-			chat.sendGuildMessagePlain("dsa");
+			ChatBox chat = new ChatBox();
+			chat.sendGuildPlain(event.getJDA().getGuilds().get(0).getDefaultChannel(), "Hello World!");
+			chat.sendPrivatePlain(event.getJDA().getGuilds().get(0).getMembers().get(1).getUser(), "TEST");
+			chat.editLastGuildMessage("My name jeff");
 		}
 	}
 }

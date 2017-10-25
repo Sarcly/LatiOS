@@ -1,11 +1,13 @@
 package latiOS.gui;
 
+import java.awt.Component;
 import java.awt.Dialog.ModalityType;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -16,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -43,16 +47,20 @@ public class Gui {
 	private JLabel lblLoggingLevel;
 
 	public static void start(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Gui window = new Gui();
-					window.FirstTimeSetupWindow.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+		try {
+			EventQueue.invokeAndWait(new Runnable() {
+				public void run() {
+					try {
+						Gui window = new Gui();
+						window.FirstTimeSetupWindow.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -68,6 +76,7 @@ public class Gui {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 		FirstTimeSetupWindow = new JDialog();
+		FirstTimeSetupWindow.setFocusTraversalPolicyProvider(true);
 		FirstTimeSetupWindow.setResizable(false);
 		FirstTimeSetupWindow.setModalityType(ModalityType.APPLICATION_MODAL);
 		FirstTimeSetupWindow.setModal(true);
@@ -128,7 +137,7 @@ public class Gui {
 		botToken.setColumns(10);
 		
 		LoggingLevel = new JComboBox();
-		LoggingLevel.setModel(new DefaultComboBoxModel(new String[] {"All", "Debug", "Warn", "Error", "Fatal", "Info", "Trace", "Off"}));
+		LoggingLevel.setModel(new DefaultComboBoxModel(new String[] {"All", "Debug", "Warn", "Fatal", "Info", "Trace"}));
 		FirstTimeSetupWindow.getContentPane().add(LoggingLevel, "9, 5, 2, 1, fill, default");
 
 		lblBotName = new JLabel("Bot Name");
@@ -171,11 +180,13 @@ public class Gui {
 				FirstTimeSetupWindow.dispose();
 				Config cfg = new Config();
 				try {
-					cfg.addValue("botToken", ConfigDataTypes.STRING, "This is the token LatiOS uses to connect to the bot account in your server", false, botToken.getText());
+					cfg.addValue("botToken", ConfigDataTypes.STRING, "This is the token LatiOS uses to connect to the bot account in your server", false, "null", botToken.getText());
 					cfg.addValue("botName", ConfigDataTypes.STRING, "The name of the bot account", false, botName.getText());
+					cfg.addValue("commandPrefix", ConfigDataTypes.STRING, "This is the prifix that LatiOS will look for in messages to signify a command", false, "!", commandPrefix.getText());
+					cfg.addValue("logToTextChannel", ConfigDataTypes.BOOLEAN, "If enabled, LatiOS will output all logged messages to a private text channel in the server.", false, "false", logToTextChannel.getSelectedItem().toString().equals("Enabled")?"true":"false");
+					cfg.addValue("loggingLevel", ConfigDataTypes.STRING, "The level of logs to show", false, "Info", LoggingLevel.getSelectedItem().toString());
 					cfg.addValue("commandPrefix", ConfigDataTypes.STRING, "This is the prifix that LatiOS will look for in messages to signify a command", false, commandPrefix.getText());
 					cfg.addValue("logToTextChannel", ConfigDataTypes.BOOLEAN, "If enabled, LatiOS will output all logged messages to a private text channel in the server.", false, logToTextChannel.getSelectedItem().toString().equals("Enabled")?"true":"false");
-
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -184,5 +195,6 @@ public class Gui {
 		});
 		btnDone.setToolTipText("Click here to finish inputing the configuration options");
 		FirstTimeSetupWindow.getContentPane().add(btnDone, "8, 16, center, center");
+		FirstTimeSetupWindow.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{FirstTimeSetupWindow.getContentPane(), lblBotToken, lblLoggingLevel, botToken, LoggingLevel, lblBotName, botName, lblCommandPrefix, commandPrefix, lblNewLabel, logToTextChannel, btnDone}));
 	}
 }
