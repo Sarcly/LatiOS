@@ -1,7 +1,5 @@
 package latiOS.util;
 
-import java.util.Stack;
-
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -16,7 +14,8 @@ public class ChatBox {
 	 * Limit the size of this stack.
 	 * if the bot is running for a long time, this stack will just keep growing... 
 	 */
-	private static Stack<Message> guildMsgs = new Stack<Message>();
+	private static SizedMessageStack<Message> guildMsgs = new SizedMessageStack<Message>(256);
+	private static SizedMessageStack<Message> privateMsgs = new SizedMessageStack<>(256);
 	
 	public ChatBox(){
 		super();
@@ -24,43 +23,45 @@ public class ChatBox {
 	
 	public void sendPrivatePlain(User user, String msg) {
 		PrivateChannel pc = user.openPrivateChannel().complete();
-		pc.sendMessage(msg).queue(i->{
-			log.debug("Sent priavte message to "+user.getName()+"#"+user.getDiscriminator()+": "+msg);
-		});
+		privateMsgs.push(pc.sendMessage(msg).complete());
+		log.debug("Sent priavte message to "+user.getName()+"#"+user.getDiscriminator()+": "+msg);
+		pc.close().queue();
 	}
 	
 	public void sendPrivateMessage(User user, Message msg) {
 		PrivateChannel pc = user.openPrivateChannel().complete();
-		pc.sendMessage(msg).queue(i->{
-			log.debug("Sent priavte message to "+user.getName()+"#"+user.getDiscriminator()+": "+msg.getContent());
-		});
+		privateMsgs.push(pc.sendMessage(msg).complete());
+		log.debug("Sent priavte message to "+user.getName()+"#"+user.getDiscriminator()+": "+msg.getContent());
+		pc.close().queue();
 	}
 	
 	public void sendGuildPlain(TextChannel tc, String msg) {
-		tc.sendMessage(msg).queue(i->{
-			log.debug("Sent guild message: "+msg);
-			guildMsgs.push(i);
-		});
+		guildMsgs.push(tc.sendMessage(msg).complete());
+		log.debug("Sent guild message: "+msg);
 	}
 	
-	public void sendGuildPlain(TextChannel tc, Message msg) {
-		tc.sendMessage(msg).queue(i->{
-			log.debug("Sent guild message: "+msg.getContent());
-			guildMsgs.push(i);
-		});
+	public void sendGuildMessage(TextChannel tc, Message msg) {
+		guildMsgs.push(tc.sendMessage(msg).complete());
+		log.debug("Sent guild message: "+msg.getContent());
 	}
 	
 	public void editLastGuildMessage(String newMsg) {
-		guildMsgs.pop().editMessage(newMsg).queue(i->{
-			log.debug("Edited guild message: "+newMsg);
-			guildMsgs.push(i);
-		});
+		guildMsgs.push(guildMsgs.pop().editMessage(newMsg).complete());
+		log.debug("Edited guild message: "+newMsg);
 	}
 	
 	public void editLastGuildMessage(Message newMsg) {
-		guildMsgs.pop().editMessage(newMsg).queue(i->{
-			log.debug("Edited guild message: "+newMsg.getContent());
-			guildMsgs.push(i);
-		});
+		guildMsgs.push(guildMsgs.pop().editMessage(newMsg).complete());
+		log.debug("Edited guild message: "+newMsg.getContent());
+	}
+	
+	public void editLastPrivateMessageToUser(User user, Message newMsg) {
+		privateMsgs.push(privateMsgs.popAtUser(user.getId()).editMessage(newMsg).complete());
+		log.debug("Edited guild message: "+newMsg.getContent());
+	}
+	
+	public void editLastPrivateMessageToUser(User user, String newMsg) {
+		privateMsgs.push(privateMsgs.popAtUser(user.getId()).editMessage(newMsg).complete());
+		log.debug("Edited guild message: "+newMsg);
 	}
 }
