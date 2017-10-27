@@ -1,5 +1,7 @@
 package latiOS.util;
 
+import java.io.File;
+
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -63,5 +65,22 @@ public class ChatBox {
 	public void editLastPrivateMessageToUser(User user, String newMsg) {
 		privateMsgs.push(privateMsgs.popAtUser(user.getId()).editMessage(newMsg).complete());
 		log.debug("Edited guild message: "+newMsg);
+	}
+	
+	public void deleteLastGuildMessage() {
+		Message m = guildMsgs.pop();
+		m.delete().complete();
+		log.debug("Deleted Guild message: "+m.getContent());
+	}
+	
+	public void deleteLastPrivateMessage() {
+		Message m = guildMsgs.pop();
+		m.delete().complete();
+		log.debug("Deleted Guild message: "+m.getContent());
+	}
+	
+	public void sendFileGuild(TextChannel tc, File file, Message msg) {
+		guildMsgs.push(tc.sendFile(file, msg).complete());
+		log.debug("Sent guild file: "+msg.getContent()+"::"+file.getName());
 	}
 }

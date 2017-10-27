@@ -138,6 +138,7 @@ public class Gui {
 		
 		LoggingLevel = new JComboBox();
 		LoggingLevel.setModel(new DefaultComboBoxModel(new String[] {"All", "Debug", "Warn", "Fatal", "Info", "Trace"}));
+		LoggingLevel.setSelectedIndex(4);
 		FirstTimeSetupWindow.getContentPane().add(LoggingLevel, "9, 5, 2, 1, fill, default");
 
 		lblBotName = new JLabel("Bot Name");

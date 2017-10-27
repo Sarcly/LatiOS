@@ -20,9 +20,8 @@ public class ReadyListener implements EventListener {
 			log.info("LatiOS ready to go!");
 			ChatBox chat = new ChatBox();
 			chat.sendGuildPlain(event.getJDA().getGuilds().get(0).getDefaultChannel(), "Hello World!");
-			chat.sendPrivatePlain(event.getJDA().getGuilds().get(0).getMembers().get(1).getUser(), "TEST");
-			chat.editLastGuildMessage("My name jeff");
-			System.exit(-1);
+			chat.sendGuildPlain(event.getJDA().getGuilds().get(0).getDefaultChannel(), "I will be deleted!");
+			chat.deleteLastGuildMessage();
 		}
 	}
 }
