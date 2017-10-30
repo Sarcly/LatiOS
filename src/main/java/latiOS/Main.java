@@ -8,6 +8,7 @@ import org.slf4j.event.Level;
 
 import latiOS.config.Config;
 import latiOS.exceptions.ConfigValueNotFoundException;
+import latiOS.listeners.CatagoryEventListener;
 import latiOS.listeners.GuildMessageListener;
 import latiOS.listeners.MemberJoinListener;
 import latiOS.listeners.MemberLeaveListener;
@@ -50,6 +51,7 @@ public class Main {
 				.addEventListener(new RoleDeleteListener())
 				.addEventListener(new MemberJoinListener())
 				.addEventListener(new MemberLeaveListener())
+				.addEventListener(new CatagoryEventListener())
 				.addEventListener(new ReadyListener());
 	}
 	
