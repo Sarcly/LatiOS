@@ -1,7 +1,7 @@
 package latiOS.listeners;
 
 import latiOS.exceptions.MultiServerException;
-import latiOS.util.ChatBox;
+import latiOS.util.ChannelUtil;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -17,8 +17,16 @@ public class ReadyListener implements EventListener {
 				log.fatal(new MultiServerException());
 				event.getJDA().shutdown();
 			}
+			setup(event);
 			log.info("LatiOS ready to go!");
 			
 		}
+	}
+	
+	private void setup(Event event) {
+		ChannelUtil cb = new ChannelUtil(event.getJDA().getGuilds().get(0));
+		cb.formatCatagories();
+		cb.formatTextChannel();
+		cb.formatVoiceChannel();
 	}
 }
