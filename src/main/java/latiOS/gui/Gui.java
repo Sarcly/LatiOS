@@ -37,9 +37,6 @@ public class Gui {
 	private JTextField botName;
 	private JLabel lblCommandPrefix;
 	private JTextField commandPrefix;
-	private JLabel lblNewLabel;
-	@SuppressWarnings("rawtypes")
-	private JComboBox logToTextChannel;
 	private JButton btnDone;
 	private JTextField botToken;
 	@SuppressWarnings("rawtypes")
@@ -163,18 +160,6 @@ public class Gui {
 		FirstTimeSetupWindow.getContentPane().add(commandPrefix, "4, 11, fill, top");
 		commandPrefix.setColumns(10);
 
-		lblNewLabel = new JLabel("Log to Text Channel");
-		lblNewLabel.setToolTipText("");
-		FirstTimeSetupWindow.getContentPane().add(lblNewLabel, "4, 13");
-
-		logToTextChannel = new JComboBox();
-		logToTextChannel.setToolTipText(
-				"LatiOS will create a text channel that is only accessable by the owner and itself to log all events");
-		logToTextChannel.setModel(new DefaultComboBoxModel(new String[] { "Enabled", "Disabled" }));
-		logToTextChannel.setSelectedIndex(0);
-		logToTextChannel.setMaximumRowCount(2);
-		FirstTimeSetupWindow.getContentPane().add(logToTextChannel, "4, 14, fill, top");
-
 		btnDone = new JButton("Done");
 		btnDone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -184,10 +169,8 @@ public class Gui {
 					cfg.addValue("botToken", ConfigDataTypes.STRING, "This is the token LatiOS uses to connect to the bot account in your server", false, "null", botToken.getText());
 					cfg.addValue("botName", ConfigDataTypes.STRING, "The name of the bot account", false, botName.getText());
 					cfg.addValue("commandPrefix", ConfigDataTypes.STRING, "This is the prifix that LatiOS will look for in messages to signify a command", false, "!", commandPrefix.getText());
-					cfg.addValue("logToTextChannel", ConfigDataTypes.BOOLEAN, "If enabled, LatiOS will output all logged messages to a private text channel in the server.", false, "false", logToTextChannel.getSelectedItem().toString().equals("Enabled")?"true":"false");
 					cfg.addValue("loggingLevel", ConfigDataTypes.STRING, "The level of logs to show", false, "Info", LoggingLevel.getSelectedItem().toString());
-					cfg.addValue("commandPrefix", ConfigDataTypes.STRING, "This is the prifix that LatiOS will look for in messages to signify a command", false, commandPrefix.getText());
-					cfg.addValue("logToTextChannel", ConfigDataTypes.BOOLEAN, "If enabled, LatiOS will output all logged messages to a private text channel in the server.", false, logToTextChannel.getSelectedItem().toString().equals("Enabled")?"true":"false");
+			
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -196,6 +179,6 @@ public class Gui {
 		});
 		btnDone.setToolTipText("Click here to finish inputing the configuration options");
 		FirstTimeSetupWindow.getContentPane().add(btnDone, "8, 16, center, center");
-		FirstTimeSetupWindow.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{FirstTimeSetupWindow.getContentPane(), lblBotToken, lblLoggingLevel, botToken, LoggingLevel, lblBotName, botName, lblCommandPrefix, commandPrefix, lblNewLabel, logToTextChannel, btnDone}));
+		FirstTimeSetupWindow.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{FirstTimeSetupWindow.getContentPane(), lblBotToken, lblLoggingLevel, botToken, LoggingLevel, lblBotName, botName, lblCommandPrefix, commandPrefix, btnDone}));
 	}
 }

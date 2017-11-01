@@ -7,8 +7,6 @@ import net.dv8tion.jda.core.hooks.EventListener;
 
 public class CatagoryEventListener implements EventListener{
 	
-	//private static final SimpleLog log = SimpleLog.getLog("LatiOS");
-	
 	public void onEvent(Event event) {
 		if (event instanceof GenericCategoryEvent){
 			ChannelUtil cb = new ChannelUtil(((GenericCategoryEvent) event).getGuild());

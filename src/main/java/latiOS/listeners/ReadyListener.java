@@ -1,7 +1,11 @@
 package latiOS.listeners;
 
+import latiOS.config.Config;
+import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.exceptions.MultiServerException;
 import latiOS.util.ChannelUtil;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -17,13 +21,19 @@ public class ReadyListener implements EventListener {
 				log.fatal(new MultiServerException());
 				event.getJDA().shutdown();
 			}
-			setup(event);
+			try {
+				setup(event);
+			} catch (ConfigValueNotFoundException e) {
+				e.printStackTrace();
+			}
+			event.getJDA().getPresence().setGame(Game.of("with the server"));
+			event.getJDA().getPresence().setStatus(OnlineStatus.ONLINE);
 			log.info("LatiOS ready to go!");
 			
 		}
 	}
 	
-	private void setup(Event event) {
+	private void setup(Event event) throws ConfigValueNotFoundException {
 		ChannelUtil cb = new ChannelUtil(event.getJDA().getGuilds().get(0));
 		cb.formatCatagories();
 		cb.formatTextChannel();

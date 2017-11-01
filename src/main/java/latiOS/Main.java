@@ -16,9 +16,14 @@ import latiOS.listeners.PrivateMessageListener;
 import latiOS.listeners.ReadyListener;
 import latiOS.listeners.RoleCreateListener;
 import latiOS.listeners.RoleDeleteListener;
+import latiOS.listeners.TextChannelEventListener;
+import latiOS.listeners.VoiceChannelEventListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDA.Status;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.utils.SimpleLog;
 
@@ -52,7 +57,11 @@ public class Main {
 				.addEventListener(new MemberJoinListener())
 				.addEventListener(new MemberLeaveListener())
 				.addEventListener(new CatagoryEventListener())
-				.addEventListener(new ReadyListener());
+				.addEventListener(new TextChannelEventListener())
+				.addEventListener(new VoiceChannelEventListener())
+				.addEventListener(new ReadyListener())
+				.setStatus(OnlineStatus.DO_NOT_DISTURB)
+				.setGame(Game.of("Loading..."));
 	}
 	
 	public static JDA startBot(JDABuilder jda) {
