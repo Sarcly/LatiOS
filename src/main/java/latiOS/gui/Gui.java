@@ -42,6 +42,8 @@ public class Gui {
 	@SuppressWarnings("rawtypes")
 	private JComboBox LoggingLevel;
 	private JLabel lblLoggingLevel;
+	private JLabel lblBotOwnerId;
+	private JTextField botOwnerID;
 
 	public static void start(String[] args) {
 		try {
@@ -170,13 +172,20 @@ public class Gui {
 					cfg.addValue("botName", ConfigDataTypes.STRING, "The name of the bot account", false, botName.getText());
 					cfg.addValue("commandPrefix", ConfigDataTypes.STRING, "This is the prifix that LatiOS will look for in messages to signify a command", false, "!", commandPrefix.getText());
 					cfg.addValue("loggingLevel", ConfigDataTypes.STRING, "The level of logs to show", false, "Info", LoggingLevel.getSelectedItem().toString());
-			
+					cfg.addValue("botOwnerID", ConfigDataTypes.STRING, "The Server owner's Discord ID", false, botOwnerID.getText());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				
 			}
 		});
+		
+		lblBotOwnerId = new JLabel("Bot Owner ID");
+		FirstTimeSetupWindow.getContentPane().add(lblBotOwnerId, "4, 13");
+		
+		botOwnerID = new JTextField();
+		FirstTimeSetupWindow.getContentPane().add(botOwnerID, "4, 14, fill, default");
+		botOwnerID.setColumns(10);
 		btnDone.setToolTipText("Click here to finish inputing the configuration options");
 		FirstTimeSetupWindow.getContentPane().add(btnDone, "8, 16, center, center");
 		FirstTimeSetupWindow.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{FirstTimeSetupWindow.getContentPane(), lblBotToken, lblLoggingLevel, botToken, LoggingLevel, lblBotName, botName, lblCommandPrefix, commandPrefix, btnDone}));

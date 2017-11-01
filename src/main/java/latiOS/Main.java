@@ -2,10 +2,15 @@ package latiOS;
 
 import java.io.IOException;
 
+import javax.activation.CommandMap;
 import javax.security.auth.login.LoginException;
 
 import org.slf4j.event.Level;
 
+import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
+import com.jagrosh.jdautilities.waiter.EventWaiter;
+
+import latiOS.commands.admin.PingCommand;
 import latiOS.config.Config;
 import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.listeners.CatagoryEventListener;
@@ -42,12 +47,16 @@ public class Main {
 		} catch (ConfigValueNotFoundException e) {
 			e.printStackTrace();
 		}
-		@SuppressWarnings("unused")
-		JDA LatiOS = startBot(buildBot());
+		try {
+			JDA LatiOS = startBot(buildBot());
+		} catch (ConfigValueNotFoundException e) {
+			e.printStackTrace();
+		}
 		log.debug("Bot Started");
 	}
 	
-	public static JDABuilder buildBot() {
+	public static JDABuilder buildBot() throws ConfigValueNotFoundException {
+		EventWaiter commandWaiter = new EventWaiter();
 		log.debug("Bot Built");
 		return new JDABuilder(AccountType.BOT)
 				.addEventListener(new GuildMessageListener())
@@ -59,6 +68,8 @@ public class Main {
 				.addEventListener(new CatagoryEventListener())
 				.addEventListener(new TextChannelEventListener())
 				.addEventListener(new VoiceChannelEventListener())
+				.addEventListener(commandWaiter)
+				.addEventListener(addCommands().build())
 				.addEventListener(new ReadyListener())
 				.setStatus(OnlineStatus.DO_NOT_DISTURB)
 				.setGame(Game.of("Loading..."));
@@ -92,5 +103,15 @@ public class Main {
 			cfg.openGui();
 		}
 		cfg.readConfig();
+	}
+	
+	public static CommandClientBuilder addCommands() throws ConfigValueNotFoundException {
+		CommandClientBuilder c = new CommandClientBuilder();
+		 c.setEmojis("\u2714", "\u2B55", "\u274C");
+		 c.setPrefix(new Config().getValue("commandPrefix"));
+		 c.setOwnerId(new Config().getValue("botOwnerID"));
+		 c.addCommand(
+				 new PingCommand());
+		 return c;
 	}
 }
