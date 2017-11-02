@@ -1,6 +1,5 @@
 package latiOS.listeners;
 
-import latiOS.config.Config;
 import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.exceptions.MultiServerException;
 import latiOS.util.ChannelUtil;
@@ -26,7 +25,6 @@ public class ReadyListener implements EventListener {
 			} catch (ConfigValueNotFoundException e) {
 				e.printStackTrace();
 			}
-			event.getJDA().getPresence().setGame(Game.of("with the server"));
 			event.getJDA().getPresence().setStatus(OnlineStatus.ONLINE);
 			log.info("LatiOS ready to go!");
 			

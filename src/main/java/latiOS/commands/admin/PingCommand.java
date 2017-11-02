@@ -10,13 +10,12 @@ public class PingCommand extends Command {
         this.name = "ping";
         this.help = "Pong!";
         this.guildOnly = false;
-        this.aliases = new String[]{"pong","pongo","poing"};
+        this.aliases = new String[]{"pong","pongo","poing","pingo","pingu"};
     }
 	
 	@Override
 	protected void execute(CommandEvent event) {
 		event.reply("Pong! ("+event.getJDA().getPing()+"ms)");
-
 	}
 
 }

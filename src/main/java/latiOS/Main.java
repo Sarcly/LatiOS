@@ -2,7 +2,6 @@ package latiOS;
 
 import java.io.IOException;
 
-import javax.activation.CommandMap;
 import javax.security.auth.login.LoginException;
 
 import org.slf4j.event.Level;
@@ -10,7 +9,10 @@ import org.slf4j.event.Level;
 import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 
+import latiOS.commands.admin.BanCommand;
 import latiOS.commands.admin.PingCommand;
+import latiOS.commands.admin.ShutdownCommand;
+import latiOS.commands.user.ColorCommand;
 import latiOS.config.Config;
 import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.listeners.CatagoryEventListener;
@@ -25,7 +27,6 @@ import latiOS.listeners.TextChannelEventListener;
 import latiOS.listeners.VoiceChannelEventListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDA.Status;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
@@ -110,8 +111,15 @@ public class Main {
 		 c.setEmojis("\u2714", "\u2B55", "\u274C");
 		 c.setPrefix(new Config().getValue("commandPrefix"));
 		 c.setOwnerId(new Config().getValue("botOwnerID"));
-		 c.addCommand(
-				 new PingCommand());
+		 c.addCommands(
+				 new PingCommand(),
+				 new ShutdownCommand(),
+				 new BanCommand(),
+				 //new KickCommand(),
+				 //new MuteCommand(),
+				 //new GagCommand());
+				 new ColorCommand());
+		 			
 		 return c;
 	}
 }
