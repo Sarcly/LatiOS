@@ -15,16 +15,8 @@ import latiOS.commands.admin.ShutdownCommand;
 import latiOS.commands.user.ColorCommand;
 import latiOS.config.Config;
 import latiOS.exceptions.ConfigValueNotFoundException;
-import latiOS.listeners.CatagoryEventListener;
-import latiOS.listeners.GuildMessageListener;
-import latiOS.listeners.MemberJoinListener;
-import latiOS.listeners.MemberLeaveListener;
-import latiOS.listeners.PrivateMessageListener;
+import latiOS.listeners.FormatListener;
 import latiOS.listeners.ReadyListener;
-import latiOS.listeners.RoleCreateListener;
-import latiOS.listeners.RoleDeleteListener;
-import latiOS.listeners.TextChannelEventListener;
-import latiOS.listeners.VoiceChannelEventListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -60,15 +52,7 @@ public class Main {
 		EventWaiter commandWaiter = new EventWaiter();
 		log.debug("Bot Built");
 		return new JDABuilder(AccountType.BOT)
-				.addEventListener(new GuildMessageListener())
-				.addEventListener(new PrivateMessageListener())
-				.addEventListener(new RoleCreateListener())
-				.addEventListener(new RoleDeleteListener())
-				.addEventListener(new MemberJoinListener())
-				.addEventListener(new MemberLeaveListener())
-				.addEventListener(new CatagoryEventListener())
-				.addEventListener(new TextChannelEventListener())
-				.addEventListener(new VoiceChannelEventListener())
+				.addEventListener(new FormatListener())
 				.addEventListener(commandWaiter)
 				.addEventListener(addCommands().build())
 				.addEventListener(new ReadyListener())

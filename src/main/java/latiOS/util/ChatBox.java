@@ -14,7 +14,7 @@ public class ChatBox {
 	
 	private static SizedMessageStack<Message> guildMsgs = new SizedMessageStack<Message>(256);
 	private static SizedMessageStack<Message> privateMsgs = new SizedMessageStack<>(256);
-	
+	@Deprecated
 	public ChatBox(){
 		super();
 	}
