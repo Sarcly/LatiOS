@@ -37,6 +37,6 @@ public class ReadyListener implements EventListener {
 		cb.formatCatagories();
 		cb.formatTextChannel();
 		cb.formatVoiceChannel();
-		ru.formatRoles();
+		ru.checkUserRoles();
 	}
 }

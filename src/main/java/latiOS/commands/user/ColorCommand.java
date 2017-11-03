@@ -6,7 +6,7 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 
 public class ColorCommand extends Command {
-
+	
 	public ColorCommand() {
 		this.name="color";
 		this.help="Changes the color of your name";

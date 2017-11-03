@@ -4,13 +4,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.jagrosh.jdautilities.utils.FinderUtil;
-
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.utils.SimpleLog;
 
 public class RoleUtil {
+	
+	private static final SimpleLog log = SimpleLog.getLog("LatiOS");
 	
 	private Guild guild;
 	
@@ -30,13 +31,14 @@ public class RoleUtil {
 	
 	public void checkUserRoles() {
 		List<Member> mems = guild.getMembers();
+		log.trace("P1=userRoles");
 		mems.forEach(i->{
-			if (!guild.getRoles().containsAll(FinderUtil.findRoles(i.getUser().getName(), guild))) {
-
-			}
-			if (guild.getMembersWithRoles(FinderUtil.findRoles(i.getUser().getName(), guild)) != null) {
-				
-			}
+			log.trace("P2=loop::"+i.getRoles().stream().anyMatch(k->k.getName().equals(i.getUser().getName())));
+			/*if (!i.getRoles().stream().anyMatch(k->k.getName().equals(i.getUser().getName()))) {
+				Role r = guild.getController().createRole().complete();
+				r.getManager().setName(i.getUser().getName()).complete();
+				guild.getController().addSingleRoleToMember(i, r);
+			}*/
 		});
 	}
 }

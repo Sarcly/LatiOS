@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.dv8tion.jda.core.entities.Category;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -69,15 +70,11 @@ public class ChannelUtil {
 		return gc.createTextChannel(name);
 	}
 	
-	public AuditableRestAction<Void> addTextChannelToCatagory(TextChannel tc, Category c) {
-		return tc.getManager().setParent(c);
+	public AuditableRestAction<Void> addChannelToCatagory(Channel tc, Channel c) {
+		return tc.getManager().setParent((Category) c);
 	}
 	
 	public ChannelAction createVoiceChannel(String name) {
 		return gc.createVoiceChannel(name);
-	}
-	
-	public AuditableRestAction<Void> addVoiceChannelToCatagory(VoiceChannel vc, Category c) {
-		return vc.getManager().setParent(c);
 	}
 }

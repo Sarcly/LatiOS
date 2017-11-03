@@ -27,6 +27,7 @@ public class FormatListener implements EventListener{
 		}else if (event instanceof GenericRoleEvent||event instanceof UserNameUpdateEvent||event instanceof UserNameUpdateEvent||event instanceof GuildMemberJoinEvent||event instanceof GuildMemberLeaveEvent) {
 			RoleUtil ru = new RoleUtil(((GenericRoleEvent) event).getGuild());
 			ru.formatRoles();
+			ru.checkUserRoles();
 		}
 	}
 }
