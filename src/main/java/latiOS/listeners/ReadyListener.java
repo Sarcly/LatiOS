@@ -2,8 +2,6 @@ package latiOS.listeners;
 
 import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.exceptions.MultiServerException;
-import latiOS.util.ChannelUtil;
-import latiOS.util.RoleUtil;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
@@ -32,11 +30,6 @@ public class ReadyListener implements EventListener {
 	}
 	
 	private void setup(Event event) throws ConfigValueNotFoundException {
-		ChannelUtil cb = new ChannelUtil(event.getJDA().getGuilds().get(0));
-		RoleUtil ru = new RoleUtil(event.getJDA().getGuilds().get(0));
-		cb.formatCatagories();
-		cb.formatTextChannel();
-		cb.formatVoiceChannel();
-		ru.checkUserRoles();
+		
 	}
 }

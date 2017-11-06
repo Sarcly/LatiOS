@@ -5,6 +5,8 @@ import java.awt.Color;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 
+import net.dv8tion.jda.core.Permission;
+
 public class ColorCommand extends Command {
 	
 	public ColorCommand() {
@@ -12,8 +14,6 @@ public class ColorCommand extends Command {
 		this.help="Changes the color of your name";
 		this.arguments="#<Color Hex>";
 		this.guildOnly=true;
-		this.requiredRole="People";
-	}
 	
 	@Override
 	protected void execute(CommandEvent event) {

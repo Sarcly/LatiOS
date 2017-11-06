@@ -15,7 +15,6 @@ import latiOS.commands.admin.ShutdownCommand;
 import latiOS.commands.user.ColorCommand;
 import latiOS.config.Config;
 import latiOS.exceptions.ConfigValueNotFoundException;
-import latiOS.listeners.FormatListener;
 import latiOS.listeners.ReadyListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -52,7 +51,6 @@ public class Main {
 		EventWaiter commandWaiter = new EventWaiter();
 		log.debug("Bot Built");
 		return new JDABuilder(AccountType.BOT)
-				.addEventListener(new FormatListener())
 				.addEventListener(commandWaiter)
 				.addEventListener(addCommands().build())
 				.addEventListener(new ReadyListener())
