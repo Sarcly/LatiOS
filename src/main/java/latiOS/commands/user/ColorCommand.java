@@ -27,6 +27,7 @@ public class ColorCommand extends Command {
 		if (!event.getMember().getRoles().stream().anyMatch(k->k.getName().equals(event.getAuthor().getName()))) {
 			event.getGuild().getController().createRole().setName(event.getAuthor().getName()).setPermissions(0L).complete();
 		}
-		event.getMember().getRoles().stream();
+		event.getMember().getRoles().stream().filter(k->k.getName().equals(event.getAuthor().getName())).findFirst().get().getManager().setColor(Color.decode(event.getArgs().startsWith("#")?event.getArgs():"#"+event.getArgs())).complete();
+		event.reply("Change your color to "+(event.getArgs().startsWith("#")?event.getArgs():"#"+event.getArgs()));
 	}
 }
