@@ -10,6 +10,7 @@ import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 
 import latiOS.commands.admin.BanCommand;
+import latiOS.commands.admin.KickCommand;
 import latiOS.commands.admin.PingCommand;
 import latiOS.commands.admin.ShutdownCommand;
 import latiOS.commands.user.ColorCommand;
@@ -94,14 +95,16 @@ public class Main {
 		 c.setPrefix(new Config().getValue("commandPrefix"));
 		 c.setOwnerId(new Config().getValue("botOwnerID"));
 		 c.addCommands(
-				 new PingCommand(),
+				 //Admin Commands
 				 new ShutdownCommand(),
 				 new BanCommand(),
-				 //new KickCommand(),
+				 new KickCommand(),
 				 //new MuteCommand(),
-				 //new GagCommand());
-				 new ColorCommand());
-		 			
+				 //new GagCommand()),
+				 //User Commands
+				 new ColorCommand()),
+		 		 new PingCommand();
+		 		 //Music Commands
 		 return c;
 	}
 }

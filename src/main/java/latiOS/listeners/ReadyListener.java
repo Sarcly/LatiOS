@@ -1,6 +1,5 @@
 package latiOS.listeners;
 
-import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.exceptions.MultiServerException;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.events.Event;
@@ -18,18 +17,9 @@ public class ReadyListener implements EventListener {
 				log.fatal(new MultiServerException());
 				event.getJDA().shutdown();
 			}
-			try {
-				setup(event);
-			} catch (ConfigValueNotFoundException e) {
-				e.printStackTrace();
-			}
 			event.getJDA().getPresence().setStatus(OnlineStatus.ONLINE);
 			log.info("LatiOS ready to go!");
 			
 		}
-	}
-	
-	private void setup(Event event) throws ConfigValueNotFoundException {
-		
 	}
 }
