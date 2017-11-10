@@ -8,6 +8,8 @@ public class ShutdownCommand extends Command {
 	public ShutdownCommand() {
 		this.name = "shutdown";
 		this.help = "Shuts down the Bot";
+		this.ownerCommand=true;
+		this.category = new Category("Admin Commands");
 	}
 	
 	@Override

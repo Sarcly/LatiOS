@@ -18,8 +18,7 @@ public class ReadyListener implements EventListener {
 				event.getJDA().shutdown();
 			}
 			event.getJDA().getPresence().setStatus(OnlineStatus.ONLINE);
-			log.info("LatiOS ready to go!");
-			
+			log.info("LatiOS ready to go!");	
 		}
 	}
 }

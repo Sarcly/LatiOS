@@ -11,9 +11,15 @@ import com.jagrosh.jdautilities.waiter.EventWaiter;
 
 import latiOS.commands.admin.BanCommand;
 import latiOS.commands.admin.KickCommand;
-import latiOS.commands.admin.PingCommand;
 import latiOS.commands.admin.ShutdownCommand;
+import latiOS.commands.music.BackCommand;
+import latiOS.commands.music.PauseCommand;
+import latiOS.commands.music.PlayCommand;
+import latiOS.commands.music.PlaylistCommand;
+import latiOS.commands.music.SkipCommand;
+import latiOS.commands.music.StopCommand;
 import latiOS.commands.user.ColorCommand;
+import latiOS.commands.user.PingCommand;
 import latiOS.config.Config;
 import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.listeners.ReadyListener;
@@ -41,6 +47,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		try {
+			@SuppressWarnings("unused")
 			JDA LatiOS = startBot(buildBot());
 		} catch (ConfigValueNotFoundException e) {
 			e.printStackTrace();
@@ -100,11 +107,17 @@ public class Main {
 				 new BanCommand(),
 				 new KickCommand(),
 				 //new MuteCommand(),
-				 //new GagCommand()),
+				 //new GagCommand(),
 				 //User Commands
-				 new ColorCommand()),
-		 		 new PingCommand();
+				 new ColorCommand(),
+		 		 new PingCommand()
 		 		 //Music Commands
+		 		 /*new PlayCommand(),
+		 		 new PauseCommand(),
+		 		 new SkipCommand(),
+		 		 new BackCommand(),
+		 		 new PlaylistCommand(),
+		 		 new StopCommand()*/);
 		 return c;
 	}
 }

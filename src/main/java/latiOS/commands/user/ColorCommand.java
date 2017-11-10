@@ -12,6 +12,7 @@ public class ColorCommand extends Command {
 		this.help="Changes the color of your name";
 		this.arguments="#<Color Hex>";
 		this.guildOnly=true;
+		this.category = new Category("User Commands");
 	}
 	
 	@Override
