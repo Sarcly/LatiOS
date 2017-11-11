@@ -1,6 +1,5 @@
 package latiOS.gui;
 
-import java.awt.Component;
 import java.awt.Dialog.ModalityType;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -18,8 +17,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -188,6 +185,5 @@ public class Gui {
 		botOwnerID.setColumns(10);
 		btnDone.setToolTipText("Click here to finish inputing the configuration options");
 		FirstTimeSetupWindow.getContentPane().add(btnDone, "8, 16, center, center");
-		FirstTimeSetupWindow.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{FirstTimeSetupWindow.getContentPane(), lblBotToken, lblLoggingLevel, botToken, LoggingLevel, lblBotName, botName, lblCommandPrefix, commandPrefix, btnDone}));
 	}
 }
