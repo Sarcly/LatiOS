@@ -11,7 +11,6 @@ public class BanCommand extends Command {
 		this.name="ban";
 		this.aliases = new String[]{"banhammer"};
 		this.arguments = "<@User> [@User...]";
-		this.requiredRole="Admin";
 		this.category = new Category("Admin Commands");
 		this.botPermissions = new Permission[] {Permission.BAN_MEMBERS};
 		this.userPermissions = new Permission[] {Permission.BAN_MEMBERS};
@@ -20,11 +19,11 @@ public class BanCommand extends Command {
 	@Override
 	protected void execute(CommandEvent event) {
 		if (event.getArgs().isEmpty()||!event.getArgs().matches("^<{1}@{1}!?\\d{17,}>{1}$")) {
-			event.reply("You need to mention a user to kick!");
+			event.reply("You need to mention a user to ban!");
 			return;
 		}
 		if (!event.getMessage().getMentionedUsers().stream().anyMatch(k->event.getGuild().getSelfMember().canInteract(event.getGuild().getMember(k)))) {
-			event.reply("I dont have permission to kick that user!");
+			event.reply("I dont have permission to ban that user!");
 			return;
 		}
 		if (!event.getMessage().getMentionedUsers().stream().anyMatch(k->event.getMember().canInteract(event.getGuild().getMember(k)))) {

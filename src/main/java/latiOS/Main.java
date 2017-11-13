@@ -10,16 +10,12 @@ import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 
 import latiOS.commands.admin.BanCommand;
-import latiOS.commands.admin.GagCommand;
+import latiOS.commands.admin.DeafenCommand;
 import latiOS.commands.admin.KickCommand;
 import latiOS.commands.admin.MuteCommand;
 import latiOS.commands.admin.ShutdownCommand;
-import latiOS.commands.music.BackCommand;
-import latiOS.commands.music.PauseCommand;
-import latiOS.commands.music.PlayCommand;
-import latiOS.commands.music.PlaylistCommand;
-import latiOS.commands.music.SkipCommand;
-import latiOS.commands.music.StopCommand;
+import latiOS.commands.admin.UndeafenCommand;
+import latiOS.commands.admin.UnmuteCommand;
 import latiOS.commands.user.ColorCommand;
 import latiOS.commands.user.PingCommand;
 import latiOS.config.Config;
@@ -109,7 +105,9 @@ public class Main {
 				 new BanCommand(),
 				 new KickCommand(),
 				 new MuteCommand(),
-				 new GagCommand(),
+				 new UnmuteCommand(),
+				 new DeafenCommand(),
+				 new UndeafenCommand(),
 				 //User Commands
 				 new ColorCommand(),
 		 		 new PingCommand()

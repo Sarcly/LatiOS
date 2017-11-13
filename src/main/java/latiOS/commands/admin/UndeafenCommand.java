@@ -5,35 +5,34 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 
 import net.dv8tion.jda.core.Permission;
 
-public class MuteCommand extends Command {
-
-	public MuteCommand() {
-		this.name =  "mute";
-		this.help = "Mutes the specified user in all VoiceChannels";
+public class UndeafenCommand extends Command {
+	
+	public UndeafenCommand() {
+		this.name =  "undeafen";
+		this.help = "Undeafen the specified user in all TextChannels";
 		this.arguments = "<@User> [@User...]";
-		this.aliases = new String[]{"silence"};
 		this.category = new Category("Admin Commands");
-		this.botPermissions = new Permission[] {Permission.VOICE_MUTE_OTHERS};
-		this.userPermissions = new Permission[] {Permission.VOICE_MUTE_OTHERS};
+		this.botPermissions = new Permission[] {Permission.VOICE_DEAF_OTHERS};
+		this.userPermissions = new Permission[] {Permission.VOICE_DEAF_OTHERS};
 	}
 	
 	@Override
 	protected void execute(CommandEvent event) {
 		if (event.getArgs().isEmpty()||!event.getArgs().matches("^<{1}@{1}!?\\d{17,}>{1}$")) {
-			event.reply("You need to mention a user to mute!");
+			event.replyError("You need to mention a user to undeafen!");
 			return;
 		}
 		if (!event.getMessage().getMentionedUsers().stream().anyMatch(k->event.getGuild().getSelfMember().canInteract(event.getGuild().getMember(k)))) {
-			event.reply("I dont have permission to mute that user!");
+			event.replyError("I dont have permission to undeafen that user!");
 			return;
 		}
 		if (!event.getMessage().getMentionedUsers().stream().anyMatch(k->event.getMember().canInteract(event.getGuild().getMember(k)))) {
-			event.reply("You dont have permission to mute that user!");
+			event.replyError("You dont have permission to undeafen that user!");
 			return;
 		}
 		event.getMessage().getMentionedUsers().forEach(k->{
-			event.getGuild().getController().setMute(event.getGuild().getMember(k), true).complete();
-			event.reply("Muted user "+k.getName()+"#"+k.getDiscriminator());
+			event.getGuild().getController().setDeafen(event.getGuild().getMember(k), false).complete();
+			event.reply("Undeafened user "+k.getName()+"#"+k.getDiscriminator());
 		});
 	}
 }

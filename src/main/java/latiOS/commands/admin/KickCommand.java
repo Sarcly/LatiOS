@@ -9,7 +9,7 @@ public class KickCommand extends Command {
 
 	public KickCommand() {
 		this.name="kick";
-		this.arguments= "<User>";
+		this.arguments= "<User> [User...]";
 		this.botPermissions = new Permission[] {Permission.KICK_MEMBERS};
 		this.userPermissions = new Permission[] {Permission.KICK_MEMBERS};
 		this.help="Kick the specified user";
