@@ -16,6 +16,8 @@ import latiOS.commands.admin.MuteCommand;
 import latiOS.commands.admin.ShutdownCommand;
 import latiOS.commands.admin.UndeafenCommand;
 import latiOS.commands.admin.UnmuteCommand;
+import latiOS.commands.music.BackCommand;
+import latiOS.commands.music.PlayCommand;
 import latiOS.commands.user.ColorCommand;
 import latiOS.commands.user.PingCommand;
 import latiOS.config.Config;
@@ -110,14 +112,14 @@ public class Main {
 				 new UndeafenCommand(),
 				 //User Commands
 				 new ColorCommand(),
-		 		 new PingCommand()
+		 		 new PingCommand(),
 		 		 //Music Commands
-		 		 /*new PlayCommand(),
-		 		 new PauseCommand(),
-		 		 new SkipCommand(),
-		 		 new BackCommand(),
-		 		 new PlaylistCommand(),
-		 		 new StopCommand()*/);
+		 		 //new PlayCommand(),
+		 		 //new PauseCommand(),
+		 		 //new SkipCommand(),
+		 		 new BackCommand());
+		 		 //new PlaylistCommand(),
+		 		 //new StopCommand());
 		 return c;
 	}
 }
