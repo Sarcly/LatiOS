@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
+import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
 import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
@@ -17,7 +18,11 @@ import latiOS.commands.admin.ShutdownCommand;
 import latiOS.commands.admin.UndeafenCommand;
 import latiOS.commands.admin.UnmuteCommand;
 import latiOS.commands.music.BackCommand;
+import latiOS.commands.music.PauseCommand;
 import latiOS.commands.music.PlayCommand;
+import latiOS.commands.music.PlaylistCommand;
+import latiOS.commands.music.SkipCommand;
+import latiOS.commands.music.StopCommand;
 import latiOS.commands.user.ColorCommand;
 import latiOS.commands.user.PingCommand;
 import latiOS.config.Config;
@@ -29,11 +34,9 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.utils.SimpleLog;
+import net.dv8tion.jda.core.utils.JDALogger;
 
 public class Main {
-
-	private static final SimpleLog log = SimpleLog.getLog("LatiOS");
 	
 	public static void main(String[] args) {
 		try {
@@ -42,22 +45,15 @@ public class Main {
 			e.printStackTrace();
 		}
 		try {
-			setLogLevel(new Config().getValue("loggingLevel"));
-		} catch (ConfigValueNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
 			@SuppressWarnings("unused")
 			JDA LatiOS = startBot(buildBot());
 		} catch (ConfigValueNotFoundException e) {
 			e.printStackTrace();
 		}
-		log.debug("Bot Started");
 	}
 	
 	public static JDABuilder buildBot() throws ConfigValueNotFoundException {
 		EventWaiter commandWaiter = new EventWaiter();
-		log.debug("Bot Built");
 		return new JDABuilder(AccountType.BOT)
 				.addEventListener(commandWaiter)
 				.addEventListener(addCommands().build())
@@ -74,18 +70,6 @@ public class Main {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	public static void setLogLevel(String level) {
-		switch (level) {
-		case "All":log.setLevel(Level.TRACE);return;
-		case "Debug":log.setLevel(Level.DEBUG);return;
-		case "Warn":log.setLevel(Level.WARN);return;
-		case "Fatal":log.setLevel(Level.ERROR);return;
-		case "Info":log.setLevel(Level.INFO);return;
-		case "Trace":log.setLevel(Level.TRACE);return;
-		default: log.setLevel(Level.INFO);return;
-		}
 	}
 	
 	public static void loadConfigs() throws ConfigValueNotFoundException, IOException {
@@ -114,12 +98,12 @@ public class Main {
 				 new ColorCommand(),
 		 		 new PingCommand(),
 		 		 //Music Commands
-		 		 //new PlayCommand(),
-		 		 //new PauseCommand(),
-		 		 //new SkipCommand(),
-		 		 new BackCommand());
-		 		 //new PlaylistCommand(),
-		 		 //new StopCommand());
+		 		 new PlayCommand(),
+		 		 new PauseCommand(),
+		 		 new SkipCommand(),
+		 		 new BackCommand(),
+		 		 new PlaylistCommand(),
+		 		 new StopCommand());
 		 return c;
 	}
 }

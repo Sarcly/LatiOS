@@ -10,11 +10,12 @@ public class PlayCommand extends Command {
 		this.help = "Plays a song with the given link";
 		this.arguments = "<URL>";
 		this.category = new Category("Music Control");
+		this.guildOnly = true;
 	}
 	
 	@Override
 	protected void execute(CommandEvent event) {
-event.reply("yes");
+		event.reply("Sorry, not implemented");
 	}
 
 }

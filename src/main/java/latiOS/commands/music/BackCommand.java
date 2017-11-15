@@ -9,12 +9,12 @@ public class BackCommand extends Command {
 		this.name = "back";
 		this.help = "Goes back one song in the list";
 		this.category = new Category("Music Control");
-		this.children = new Command[] {new PlayCommand()};
+		this.guildOnly = true;
 	}
 	
 	@Override
 	protected void execute(CommandEvent event) {
-
+		event.reply("Sorry, not implemented");
 	}
 
 }

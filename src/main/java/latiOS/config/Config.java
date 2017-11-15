@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import latiOS.exceptions.ConfigFormatException;
 import latiOS.exceptions.ConfigValueNotFoundException;
 import latiOS.gui.Gui;
 
@@ -153,6 +154,10 @@ public class Config {
 	
 	public void readConfig() throws IOException {
 		ConfigReader cfgr = new ConfigReader(new FileInputStream(cfgFile));
-		cfgr.readAll();
+		try {
+			cfgr.readAll();
+		} catch (ConfigFormatException e) {
+			e.printStackTrace();
+		}
 	}
 }

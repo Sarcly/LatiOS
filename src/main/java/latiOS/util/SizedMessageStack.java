@@ -4,11 +4,8 @@ import java.util.EmptyStackException;
 import java.util.Stack;
 
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.utils.SimpleLog;
 
 public class SizedMessageStack<E> extends Stack<Message> {
-	
-	private static final SimpleLog log = SimpleLog.getLog("LatiOS");
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -61,7 +58,7 @@ public class SizedMessageStack<E> extends Stack<Message> {
     
     public synchronized Message popAtUser(String id) {
     	if (this.size() == 0) {
-    		log.fatal(new EmptyStackException());
+    		new EmptyStackException();
     	}
     	for (int i=this.size();i>0;i--) {
     		if (elementAt(i).getAuthor().getId().equals(id)) {
