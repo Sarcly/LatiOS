@@ -2,15 +2,11 @@ package latiOS.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-
 import latiOS.exceptions.ConfigFormatException;
 import latiOS.exceptions.ErrorCodes;
-import net.dv8tion.jda.core.utils.JDALogger;
 
 public class ConfigReader {
 

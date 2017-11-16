@@ -4,9 +4,6 @@ import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
-import org.slf4j.Logger;
-import org.slf4j.event.Level;
-
 import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 
@@ -34,7 +31,6 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.utils.JDALogger;
 
 public class Main {
 	
