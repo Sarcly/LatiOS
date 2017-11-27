@@ -17,7 +17,6 @@ import latiOS.commands.admin.UnmuteCommand;
 import latiOS.commands.music.BackCommand;
 import latiOS.commands.music.PauseCommand;
 import latiOS.commands.music.PlayCommand;
-import latiOS.commands.music.PlaylistCommand;
 import latiOS.commands.music.SkipCommand;
 import latiOS.commands.music.StopCommand;
 import latiOS.commands.user.ColorCommand;
@@ -98,7 +97,6 @@ public class Main {
 		 		 new PauseCommand(),
 		 		 new SkipCommand(),
 		 		 new BackCommand(),
-		 		 new PlaylistCommand(),
 		 		 new StopCommand());
 		 return c;
 	}
