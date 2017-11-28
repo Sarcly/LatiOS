@@ -17,6 +17,7 @@ import latiOS.commands.admin.UnmuteCommand;
 import latiOS.commands.music.BackCommand;
 import latiOS.commands.music.PauseCommand;
 import latiOS.commands.music.PlayCommand;
+import latiOS.commands.music.QueueCommand;
 import latiOS.commands.music.SkipCommand;
 import latiOS.commands.music.StopCommand;
 import latiOS.commands.user.ColorCommand;
@@ -29,6 +30,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Game.GameType;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 public class Main {
@@ -54,7 +56,7 @@ public class Main {
 				.addEventListener(addCommands().build())
 				.addEventListener(new ReadyListener())
 				.setStatus(OnlineStatus.DO_NOT_DISTURB)
-				.setGame(Game.of("Loading..."));
+				.setGame(Game.of(GameType.DEFAULT, "Loading"));
 	}
 	
 	public static JDA startBot(JDABuilder jda) {
@@ -97,7 +99,8 @@ public class Main {
 		 		 new PauseCommand(),
 		 		 new SkipCommand(),
 		 		 new BackCommand(),
-		 		 new StopCommand());
+		 		 new StopCommand(),
+		 		 new QueueCommand());
 		 return c;
 	}
 }
