@@ -2,6 +2,7 @@ package latiOS.music;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
@@ -14,6 +15,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import net.dv8tion.jda.core.entities.Guild;
 
+import latiOS.music.GuildMusicManager;
+
 public class AudioUtil {
 
 	private final AudioPlayerManager playerManager;
@@ -21,66 +24,77 @@ public class AudioUtil {
 
 	public AudioUtil() {
 		this.musicManagers = new HashMap<>();
-	    this.playerManager = new DefaultAudioPlayerManager();
-	    AudioSourceManagers.registerRemoteSources(playerManager);
-	    AudioSourceManagers.registerLocalSource(playerManager);
+		this.playerManager = new DefaultAudioPlayerManager();
+		AudioSourceManagers.registerRemoteSources(playerManager);
+		AudioSourceManagers.registerLocalSource(playerManager);
 	}
-	
-	 public synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
-		    long guildId = Long.parseLong(guild.getId());
-		    GuildMusicManager musicManager = musicManagers.get(guildId);
 
-		    if (musicManager == null) {
-		      musicManager = new GuildMusicManager(playerManager);
-		      musicManagers.put(guildId, musicManager);
-		    }
+	public synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
+		long guildId = Long.parseLong(guild.getId());
+		GuildMusicManager musicManager = musicManagers.get(guildId);
 
-		    guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
+		if (musicManager == null) {
+			musicManager = new GuildMusicManager(playerManager);
+			musicManagers.put(guildId, musicManager);
+		}
 
-		    return musicManager;
-	 }
-	 
-	 public void loadAndPlay(CommandEvent event, final String trackUrl) {
-		    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
-		    playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
-		      @Override
-		      public void trackLoaded(AudioTrack track) {
-		        event.reply("Adding to queue " + track.getInfo().title);
-		        play(event.getGuild(), musicManager, track, event);
-		      }
+		guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
 
-		      @Override
-		      public void playlistLoaded(AudioPlaylist playlist) {
-		        AudioTrack firstTrack = playlist.getSelectedTrack();
+		return musicManager;
+	}
 
-		        if (firstTrack == null) {
-		          firstTrack = playlist.getTracks().get(0);
-		        }
+	public void loadAndPlay(CommandEvent event, final String trackUrl) {
+		GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+		playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+			@Override
+			public void trackLoaded(AudioTrack track) {
+				event.reply("Adding to queue " + track.getInfo().title);
+				play(event.getGuild(), musicManager, track, event);
+			}
 
-		        event.reply("Adding to queue " + firstTrack.getInfo().title + " (first track of playlist " + playlist.getName() + ")");
+			@Override
+			public void playlistLoaded(AudioPlaylist playlist) {
+				AudioTrack firstTrack = playlist.getSelectedTrack();
 
-		        play(event.getGuild(), musicManager, firstTrack, event);
-		      }
+				if (firstTrack == null) {
+					firstTrack = playlist.getTracks().get(0);
+				}
 
-		      @Override
-		      public void noMatches() {
-		        event.reply("Nothing found by " + trackUrl);
-		      }
+				event.reply("Adding to queue " + firstTrack.getInfo().title + " (first track of playlist "
+						+ playlist.getName() + ")");
 
-		      @Override
-		      public void loadFailed(FriendlyException exception) {
-		        event.reply("Could not play: " + exception.getMessage());
-		      }
-		    });
-	 }
+				play(event.getGuild(), musicManager, firstTrack, event);
+			}
 
-	 public void play(Guild guild, GuildMusicManager musicManager, AudioTrack track, CommandEvent event) {
-		 guild.getAudioManager().openAudioConnection(event.getGuild().getMember(event.getAuthor()).getVoiceState().getChannel());
-		 musicManager.scheduler.queue(track);
-	 }
+			@Override
+			public void noMatches() {
+				event.reply("Nothing found by " + trackUrl);
+			}
 
-	 public void skipTrack(CommandEvent event) {
-		 GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
-		 musicManager.scheduler.nextTrack();
-	 }
+			@Override
+			public void loadFailed(FriendlyException exception) {
+				event.reply("Could not play: " + exception.getMessage());
+			}
+		});
+	}
+
+	public void play(Guild guild, GuildMusicManager musicManager, AudioTrack track, CommandEvent event) {
+		guild.getAudioManager()
+				.openAudioConnection(event.getMember().getVoiceState().getChannel());
+		musicManager.scheduler.queue(track);
+	}
+
+	public void skipTrack(CommandEvent event) {
+		GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+		musicManager.scheduler.nextTrack();
+	}
+
+	public BlockingQueue<AudioTrack> getQueue(CommandEvent event) {
+		GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+		return musicManager.scheduler.getQueue();
+	}
+
+	public void joinChannel(CommandEvent event) {
+		event.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
+	}
 }
