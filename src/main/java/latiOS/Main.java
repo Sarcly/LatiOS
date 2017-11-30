@@ -15,6 +15,7 @@ import latiOS.commands.admin.ShutdownCommand;
 import latiOS.commands.admin.UndeafenCommand;
 import latiOS.commands.admin.UnmuteCommand;
 import latiOS.commands.music.BackCommand;
+import latiOS.commands.music.JoinCommand;
 import latiOS.commands.music.PauseCommand;
 import latiOS.commands.music.PlayCommand;
 import latiOS.commands.music.QueueCommand;
@@ -100,7 +101,8 @@ public class Main {
 		 		 new SkipCommand(),
 		 		 new BackCommand(),
 		 		 new StopCommand(),
-		 		 new QueueCommand());
+		 		 new QueueCommand(),
+		 		 new JoinCommand());
 		 return c;
 	}
 }

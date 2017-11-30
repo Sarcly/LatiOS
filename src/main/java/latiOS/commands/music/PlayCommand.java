@@ -17,7 +17,7 @@ public class PlayCommand extends Command {
 	
 	@Override
 	protected void execute(CommandEvent event) {
-		AudioUtil au = new AudioUtil();
-		au.loadAndPlay(event,event.getArgs());
+		AudioUtil au = new AudioUtil(event.getGuild());
+		au.loadAndPlay(au.getGuildAudioPlayer(event.getGuild()), event,event.getArgs());
 	}
 }
