@@ -82,7 +82,7 @@ public class AudioUtil {
 			if (event.getMember().getVoiceState().getChannel() != null) {
 				event.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
 			} else {
-				event.replyError("Your not in a voice channel to join!");
+				event.replyError("You're not in a voice channel to join!");
 			}
 		} else {
 			VoiceChannel chan = null;
