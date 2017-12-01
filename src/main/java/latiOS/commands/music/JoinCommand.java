@@ -18,7 +18,7 @@ public class JoinCommand extends Command{
 	@Override
 	protected void execute(CommandEvent event) {
 		AudioUtil au = new AudioUtil(event.getGuild());
-		au.join(event);
+		au.join(event, false);
 	}
 	
 }

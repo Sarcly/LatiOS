@@ -17,6 +17,7 @@ public class QueueCommand extends Command{
 	@Override
 	protected void execute(CommandEvent event) {
 		AudioUtil au = new AudioUtil(event.getGuild());
+		au.queue(event);
 	}
 
 }

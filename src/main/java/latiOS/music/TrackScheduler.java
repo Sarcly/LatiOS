@@ -1,5 +1,6 @@
 package latiOS.music;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,9 +38,16 @@ public class TrackScheduler extends AudioEventAdapter
         // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
+    	System.out.println(track.getInfo().title);
         if (!player.startTrack(track, true))
         {
-            queue.offer(track);
+            queue.add(track);
+            System.out.println(Arrays.deepToString(queue.toArray()));
+        }
+        else {
+        	// if it goes into here, 
+        	System.out.println("hewwo???");
+        	System.out.println(player.startTrack(track, false));
         }
     }
 
@@ -56,6 +64,7 @@ public class TrackScheduler extends AudioEventAdapter
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason)
     {
+    	System.out.println(track.getInfo().identifier);
         this.lastTrack = track;
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
         if (endReason.mayStartNext)

@@ -3,6 +3,8 @@ package latiOS.commands.music;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 
+import latiOS.music.AudioUtil;
+
 public class BackCommand extends Command {
 
 	public BackCommand() {
@@ -14,7 +16,8 @@ public class BackCommand extends Command {
 	
 	@Override
 	protected void execute(CommandEvent event) {
-		event.reply("Sorry, not implemented");
+		AudioUtil au = new AudioUtil(event.getGuild());
+		au.np(event);
 	}
 
 }

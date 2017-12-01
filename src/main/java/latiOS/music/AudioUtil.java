@@ -22,7 +22,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
@@ -45,39 +44,16 @@ public class AudioUtil {
 		playerManager.registerSourceManager(new HttpAudioSourceManager());
 
 		musicManagers = new HashMap<String, GuildMusicManager>();
-
 		mng = getMusicManager(guild);
 		player = mng.player;
 		scheduler = mng.scheduler;
 	}
 
-	// Prefix for all commands: .
-	// Example: .play
-	// Current commands
-	// join [name] - Joins a voice channel that has the provided name
-	// join [id] - Joins a voice channel based on the provided id.
-	// leave - Leaves the voice channel that the bot is currently in.
-	// play - Plays songs from the current queue. Starts playing again if it was
-	// previously paused
-	// play [url] - Adds a new song to the queue and starts playing if it wasn't
-	// playing already
-	// pplay - Adds a playlist to the queue and starts playing if not already
-	// playing
-	// pause - Pauses audio playback
-	// stop - Completely stops audio playback, skipping the current song.
-	// skip - Skips the current song, automatically starting the next
-	// nowplaying - Prints information about the currently playing song (title,
-	// current time)
-	// np - alias for nowplaying
-	// list - Lists the songs in the queue
-	// volume [val] - Sets the volume of the MusicPlayer [10 - 100]
-	// restart - Restarts the current song or restarts the previous song if there is
-	// no current song playing.
-	// repeat - Makes the player repeat the currently playing song
-	// reset - Completely resets the player, fixing all errors and clearing the
-	// queue.
-
-	public void join(CommandEvent event) {
+	public void join(CommandEvent event, boolean defaultChan) {
+		if (defaultChan) {
+			event.getGuild().getAudioManager().openAudioConnection(event.getGuild().getVoiceChannels().get(0));
+			return;
+		}
 		if (event.getArgs().isEmpty()) {
 			if (event.getMember().getVoiceState().getChannel() != null) {
 				event.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
@@ -96,7 +72,7 @@ public class AudioUtil {
 			if (chan == null) {
 				event.replyError("Could not find VoiceChannel by name: " + event.getArgs());
 			} else {
-				event.getGuild().getAudioManager().setSendingHandler(mng.getSendHandler());
+				event.getGuild().getAudioManager().setSendingHandler(mng.sendHandler);
 				try {
 					event.getGuild().getAudioManager().openAudioConnection(chan);
 				} catch (PermissionException e) {
@@ -106,7 +82,62 @@ public class AudioUtil {
 				}
 			}
 		}
+	}
 
+	public void play(CommandEvent event) {
+		if (event.getArgs().isEmpty()) // It is only the command to start playback (probably after pause)
+		{
+			if (player.isPaused()) {
+				player.setPaused(false);
+				event.reply("Playback as been resumed.");
+			} else if (player.getPlayingTrack() != null) {
+				event.reply("Player is already playing!");
+			} else if (scheduler.queue.isEmpty()) {
+				event.reply("The current audio queue is empty! Add something to the queue first!");
+			}
+		} else // Commands has 2 parts, !play and url.
+		{
+			loadAndPlay(mng, event, event.getArgs(), false);
+		}
+	}
+
+	public void queue(CommandEvent event) {
+		Queue<AudioTrack> queue = scheduler.queue;
+		synchronized (queue) {
+			if (queue.isEmpty()) {
+				event.reply("The queue is currently empty!");
+			} else {
+				int trackCount = 0;
+				long queueLength = 0;
+				StringBuilder sb = new StringBuilder();
+				sb.append("Current Queue: Entries: ").append(queue.size()).append("\n");
+				for (AudioTrack track : queue) {
+					queueLength += track.getDuration();
+					if (trackCount < 10) {
+						sb.append("`[").append(getTimestamp(track.getDuration())).append("]` ");
+						sb.append(track.getInfo().title).append("\n");
+						trackCount++;
+					}
+				}
+				sb.append("\n").append("Total Queue Time Length: ").append(getTimestamp(queueLength));
+
+				event.reply(sb.toString());
+			}
+		}
+	}
+	
+	public void np(CommandEvent event) {
+		AudioTrack currentTrack = player.getPlayingTrack();
+		if (currentTrack != null) {
+			String title = currentTrack.getInfo().title;
+			String position = getTimestamp(currentTrack.getPosition());
+			String duration = getTimestamp(currentTrack.getDuration());
+
+			String nowplaying = String.format("**Playing:** %s\n**Time:** [%s / %s]", title, position, duration);
+
+			event.reply(nowplaying);
+		} else
+			event.reply("The player is not currently playing anything!");
 	}
 
 	public void handle(CommandEvent event) {
@@ -132,7 +163,7 @@ public class AudioUtil {
 				if (chan == null) {
 					event.getChannel().sendMessage("Could not find VoiceChannel by name: " + command[1]).queue();
 				} else {
-					guild.getAudioManager().setSendingHandler(mng.getSendHandler());
+					guild.getAudioManager().setSendingHandler(mng.sendHandler);
 
 					try {
 						guild.getAudioManager().openAudioConnection(chan);
@@ -162,10 +193,10 @@ public class AudioUtil {
 				}
 			} else // Commands has 2 parts, .play and url.
 			{
-				loadAndPlay(mng, event.getChannel(), command[1], false);
+				loadAndPlay(mng, event, command[1], false);
 			}
 		} else if (".pplay".equals(command[0]) && command.length == 2) {
-			loadAndPlay(mng, event.getChannel(), command[1], true);
+			loadAndPlay(mng, event, command[1], true);
 		} else if (".skip".equals(command[0])) {
 			scheduler.nextTrack();
 			event.getChannel().sendMessage("The current track was skipped.").queue();
@@ -229,7 +260,7 @@ public class AudioUtil {
 			}
 
 			mng = getMusicManager(guild);
-			guild.getAudioManager().setSendingHandler(mng.getSendHandler());
+			guild.getAudioManager().setSendingHandler(mng.sendHandler);
 			event.getChannel().sendMessage("The player has been completely reset!").queue();
 
 		} else if (".nowplaying".equals(command[0]) || ".np".equals(command[0])) {
@@ -278,10 +309,8 @@ public class AudioUtil {
 		}
 	}
 
-	private void loadAndPlay(GuildMusicManager mng, final MessageChannel channel, String url,
-			final boolean addPlaylist) {
+	private void loadAndPlay(GuildMusicManager mng, CommandEvent event, String url, final boolean addPlaylist) {
 		final String trackUrl;
-
 		// Strip <>'s that prevent discord from embedding link resources
 		if (url.startsWith("<") && url.endsWith(">"))
 			trackUrl = url.substring(1, url.length() - 1);
@@ -292,11 +321,8 @@ public class AudioUtil {
 			@Override
 			public void trackLoaded(AudioTrack track) {
 				String msg = "Adding to queue: " + track.getInfo().title;
-				if (mng.player.getPlayingTrack() == null)
-					msg += "\nand the Player has started playing;";
-
 				mng.scheduler.queue(track);
-				channel.sendMessage(msg).queue();
+				event.reply(msg);
 			}
 
 			@Override
@@ -309,24 +335,24 @@ public class AudioUtil {
 				}
 
 				if (addPlaylist) {
-					channel.sendMessage("Adding **" + playlist.getTracks().size() + "** tracks to queue from playlist: "
-							+ playlist.getName()).queue();
+					event.reply("Adding **" + playlist.getTracks().size() + "** tracks to queue from playlist: "
+							+ playlist.getName());
 					tracks.forEach(mng.scheduler::queue);
 				} else {
-					channel.sendMessage("Adding to queue " + firstTrack.getInfo().title + " (first track of playlist "
-							+ playlist.getName() + ")").queue();
+					event.reply("Adding to queue " + firstTrack.getInfo().title + " (first track of playlist "
+							+ playlist.getName() + ")");
 					mng.scheduler.queue(firstTrack);
 				}
 			}
 
 			@Override
 			public void noMatches() {
-				channel.sendMessage("Nothing found by " + trackUrl).queue();
+				event.reply("Nothing found by " + trackUrl);
 			}
 
 			@Override
 			public void loadFailed(FriendlyException exception) {
-				channel.sendMessage("Could not play: " + exception.getMessage()).queue();
+				event.reply("Could not play: " + exception.getMessage());
 			}
 		});
 	}

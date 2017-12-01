@@ -4,39 +4,47 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
 import net.dv8tion.jda.core.audio.AudioSendHandler;
 
-public class AudioPlayerSendHandler implements AudioSendHandler {
+public class AudioPlayerSendHandler implements AudioSendHandler
+{
+    private final AudioPlayer audioPlayer;
+    private AudioFrame lastFrame;
 
-	private final AudioPlayer audioPlayer;
+    /**
+     * @param audioPlayer Audio player to wrap.
+     */
+    public AudioPlayerSendHandler(AudioPlayer audioPlayer)
+    {
+        this.audioPlayer = audioPlayer;
+    }
 
-	private AudioFrame lastFrame;
+    @Override
+    public boolean canProvide()
+    {
+        if (lastFrame == null)
+        {
+            lastFrame = audioPlayer.provide();
+        }
 
-	public AudioPlayerSendHandler(AudioPlayer audioPlayer) {
-		this.audioPlayer = audioPlayer;
-	}
+        return lastFrame != null;
+    }
 
-	@Override
-	public boolean canProvide() {
-		if (lastFrame == null) {
-			lastFrame = audioPlayer.provide();
-		}
+    @Override
+    public byte[] provide20MsAudio()
+    {
+        if (lastFrame == null)
+        {
+            lastFrame = audioPlayer.provide();
+        }
 
-		return lastFrame != null;
-	}
+        byte[] data = lastFrame != null ? lastFrame.data : null;
+        lastFrame = null;
 
-	@Override
-	public byte[] provide20MsAudio() {
-		if (lastFrame == null) {
-			lastFrame = audioPlayer.provide();
-		}
+        return data;
+    }
 
-		byte[] data = lastFrame != null ? lastFrame.data : null;
-		lastFrame = null;
-
-		return data;
-	}
-
-	@Override
-	public boolean isOpus() {
-		return true;
-	}
+    @Override
+    public boolean isOpus()
+    {
+        return true;
+    }
 }
