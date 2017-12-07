@@ -10,6 +10,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
@@ -42,6 +43,9 @@ public class AudioUtil {
 		playerManager.registerSourceManager(new VimeoAudioSourceManager());
 		playerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
 		playerManager.registerSourceManager(new HttpAudioSourceManager());
+		
+		AudioSourceManagers.registerLocalSource(playerManager);
+		AudioSourceManagers.registerRemoteSources(playerManager);
 
 		musicManagers = new HashMap<String, GuildMusicManager>();
 		mng = getMusicManager(guild);
@@ -97,7 +101,7 @@ public class AudioUtil {
 			}
 		} else // Commands has 2 parts, !play and url.
 		{
-			loadAndPlay(mng, event, event.getArgs(), false);
+			loadAndPlay(getMusicManager(event.getGuild()), event, event.getArgs(), false);
 		}
 	}
 
