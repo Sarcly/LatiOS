@@ -5,19 +5,20 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 
 import latiOS.music.AudioUtil;
 
-public class PlayCommand extends Command {
-	
-	public PlayCommand() {
-		this.name = "play";
-		this.help = "Plays a song with the given link";
-		this.arguments = "<URL>";
-		this.category = new Category("Music Control");
+public class VolumeCommand extends Command{
+
+	public VolumeCommand() {
+		this.name = "volume";
 		this.guildOnly = true;
+		this.category = new Category("Music Control");
+		this.help = "Sets the volume";
+		this.arguments = "[new volume]";
 	}
 	
 	@Override
 	protected void execute(CommandEvent event) {
 		AudioUtil au = new AudioUtil();
-		au.play(event);
+		au.volume(event);
 	}
+	
 }

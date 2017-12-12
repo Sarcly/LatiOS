@@ -14,13 +14,19 @@ import latiOS.commands.admin.MuteCommand;
 import latiOS.commands.admin.ShutdownCommand;
 import latiOS.commands.admin.UndeafenCommand;
 import latiOS.commands.admin.UnmuteCommand;
-import latiOS.commands.music.BackCommand;
 import latiOS.commands.music.JoinCommand;
+import latiOS.commands.music.LeaveCommand;
+import latiOS.commands.music.NowPlayingCommand;
 import latiOS.commands.music.PauseCommand;
 import latiOS.commands.music.PlayCommand;
 import latiOS.commands.music.QueueCommand;
+import latiOS.commands.music.RepeatCommand;
+import latiOS.commands.music.ResetCommand;
+import latiOS.commands.music.RestartCommand;
+import latiOS.commands.music.ShuffleCommand;
 import latiOS.commands.music.SkipCommand;
 import latiOS.commands.music.StopCommand;
+import latiOS.commands.music.VolumeCommand;
 import latiOS.commands.user.ColorCommand;
 import latiOS.commands.user.PingCommand;
 import latiOS.config.Config;
@@ -99,10 +105,17 @@ public class Main {
 		 		 new PlayCommand(),
 		 		 new PauseCommand(),
 		 		 new SkipCommand(),
-		 		 new BackCommand(),
 		 		 new StopCommand(),
 		 		 new QueueCommand(),
-		 		 new JoinCommand());
+		 		 new JoinCommand(),
+		 		 new NowPlayingCommand(),
+		 		 new ShuffleCommand(),
+		 		 new LeaveCommand(),
+		 		 new VolumeCommand(),
+		 		 new StopCommand(),
+		 		 new ResetCommand(),
+		 		 new RestartCommand(),
+		 		 new RepeatCommand());
 		 return c;
 	}
 }

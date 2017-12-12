@@ -5,19 +5,19 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 
 import latiOS.music.AudioUtil;
 
-public class PlayCommand extends Command {
-	
-	public PlayCommand() {
-		this.name = "play";
-		this.help = "Plays a song with the given link";
-		this.arguments = "<URL>";
-		this.category = new Category("Music Control");
+public class RepeatCommand extends Command{
+
+	public RepeatCommand() {
+		this.name = "repeat";
 		this.guildOnly = true;
+		this.category = new Category("Music Control");
+		this.help = "Repeats the current song";
 	}
 	
 	@Override
 	protected void execute(CommandEvent event) {
 		AudioUtil au = new AudioUtil();
-		au.play(event);
+		au.repeat(event);
 	}
+	
 }

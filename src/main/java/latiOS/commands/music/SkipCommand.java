@@ -16,7 +16,8 @@ public class SkipCommand extends Command {
 	
 	@Override
 	protected void execute(CommandEvent event) {
-		AudioUtil au = new AudioUtil(event.getGuild());
+		AudioUtil au = new AudioUtil();
+		au.skip(event);
 	}
 
 }

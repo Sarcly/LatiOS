@@ -37,15 +37,11 @@ public class TrackScheduler extends AudioEventAdapter {
 		// something is playing, it returns false and does nothing. In that case the
 		// player was already playing so this
 		// track goes to the queue instead.
-		//System.out.println(player.startTrack(track, true));
-		
+		// System.out.println(player.startTrack(track, true));
+
 		if (!player.startTrack(track, true)) {
-			System.out.println("added to queue");
 			queue.offer(track);
-			return;
 		}
-		//else...
-		System.out.println("track playing now");
 	}
 
 	/**
