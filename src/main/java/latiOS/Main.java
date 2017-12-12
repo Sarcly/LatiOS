@@ -61,6 +61,7 @@ public class Main {
 		return new JDABuilder(AccountType.BOT)
 				.addEventListener(commandWaiter)
 				.addEventListener(addCommands().build())
+				//myles is a furry
 				.addEventListener(new ReadyListener())
 				.setStatus(OnlineStatus.DO_NOT_DISTURB)
 				.setGame(Game.of(GameType.DEFAULT, "Loading"));
@@ -112,7 +113,6 @@ public class Main {
 		 		 new ShuffleCommand(),
 		 		 new LeaveCommand(),
 		 		 new VolumeCommand(),
-		 		 new StopCommand(),
 		 		 new ResetCommand(),
 		 		 new RestartCommand(),
 		 		 new RepeatCommand());
