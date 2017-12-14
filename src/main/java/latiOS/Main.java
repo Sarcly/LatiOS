@@ -17,6 +17,7 @@ import latiOS.commands.admin.UnmuteCommand;
 import latiOS.commands.music.JoinCommand;
 import latiOS.commands.music.LeaveCommand;
 import latiOS.commands.music.NowPlayingCommand;
+import latiOS.commands.music.PPlayCommand;
 import latiOS.commands.music.PauseCommand;
 import latiOS.commands.music.PlayCommand;
 import latiOS.commands.music.QueueCommand;
@@ -61,7 +62,6 @@ public class Main {
 		return new JDABuilder(AccountType.BOT)
 				.addEventListener(commandWaiter)
 				.addEventListener(addCommands().build())
-				//myles is a furry
 				.addEventListener(new ReadyListener())
 				.setStatus(OnlineStatus.DO_NOT_DISTURB)
 				.setGame(Game.of(GameType.DEFAULT, "Loading"));
@@ -80,6 +80,7 @@ public class Main {
 	public static void loadConfigs() throws ConfigValueNotFoundException, IOException {
 		Config cfg = new Config();
 		if (!cfg.configExsists()) {
+			cfg.mkDirs();
 			cfg.openGui();
 		}
 		cfg.readConfig();
@@ -115,7 +116,8 @@ public class Main {
 		 		 new VolumeCommand(),
 		 		 new ResetCommand(),
 		 		 new RestartCommand(),
-		 		 new RepeatCommand());
+		 		 new RepeatCommand(),
+		 		 new PPlayCommand());
 		 return c;
 	}
 }
