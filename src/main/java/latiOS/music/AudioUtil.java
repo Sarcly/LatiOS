@@ -1,5 +1,6 @@
 package latiOS.music;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
@@ -17,8 +18,11 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
@@ -31,9 +35,9 @@ public class AudioUtil {
 	public AudioUtil() {
 		AudioSourceManagers.registerRemoteSources(playerManager);
 		playerManager.registerSourceManager(new YoutubeAudioSourceManager());
-        playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
-        playerManager.registerSourceManager(new BandcampAudioSourceManager());
-        playerManager.registerSourceManager(new VimeoAudioSourceManager());
+		playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
+		playerManager.registerSourceManager(new BandcampAudioSourceManager());
+		playerManager.registerSourceManager(new VimeoAudioSourceManager());
 	}
 
 	private static GuildMusicManager getGuildMusicManager(Guild g) {
@@ -96,7 +100,7 @@ public class AudioUtil {
 			loadAndPlay(getGuildMusicManager(event.getGuild()), event, event.getArgs(), false);
 		}
 	}
-	
+
 	public void pplay(CommandEvent event) {
 		loadAndPlay(getGuildMusicManager(event.getGuild()), event, event.getArgs(), true);
 	}
@@ -110,17 +114,17 @@ public class AudioUtil {
 				int trackCount = 0;
 				long queueLength = 0;
 				StringBuilder sb = new StringBuilder();
-				sb.append("Current Queue: Entries: ").append(queue.size()).append("\n");
+				/*sb.append("Current Queue: Entries: ").append(queue.size()).append("\n");
 				for (AudioTrack track : queue) {
 					queueLength += track.getDuration();
-					if (trackCount < 10) {
-						sb.append("`[").append(getTimestamp(track.getDuration())).append("]` ");
-						sb.append(track.getInfo().title).append("\n");
-						trackCount++;
-					}
+					sb.append("`[").append(getTimestamp(track.getDuration())).append("]` ");
+					sb.append(track.getInfo().title).append("\n");
+					trackCount++;
 				}
-				sb.append("\n").append("Total Queue Time Length: ").append(getTimestamp(queueLength));
-
+				sb.append("\n").append("Total Queue Time Length: ").append(getTimestamp(queueLength));*/
+				for(int i=0;i<20000;i++) {
+					sb.append("f");
+				}
 				event.reply(sb.toString());
 			}
 		}
@@ -201,9 +205,10 @@ public class AudioUtil {
 	}
 
 	public void repeat(CommandEvent event) {
-		getGuildMusicManager(event.getGuild()).scheduler.setRepeating(!getGuildMusicManager(event.getGuild()).scheduler.isRepeating());
-		event.getChannel()
-				.sendMessage("Player was set to: **" + (getGuildMusicManager(event.getGuild()).scheduler.isRepeating() ? "repeat" : "not repeat") + "**")
+		getGuildMusicManager(event.getGuild()).scheduler
+				.setRepeating(!getGuildMusicManager(event.getGuild()).scheduler.isRepeating());
+		event.getChannel().sendMessage("Player was set to: **"
+				+ (getGuildMusicManager(event.getGuild()).scheduler.isRepeating() ? "repeat" : "not repeat") + "**")
 				.queue();
 
 	}
