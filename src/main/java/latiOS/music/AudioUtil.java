@@ -1,6 +1,5 @@
 package latiOS.music;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
@@ -18,16 +17,13 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 public class AudioUtil {
-	public static final int DEFAULT_VOLUME = 35; // (0 - 150, where 100 is default max volume)
+	public static final int DEFAULT_VOLUME = 15; // (0 - 150, where 100 is default max volume)
 
 	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
 	private static HashMap<Guild, GuildMusicManager> guildMusicManagers = new HashMap<>();
@@ -44,6 +40,7 @@ public class AudioUtil {
 		if (!guildMusicManagers.containsKey(g)) {
 			guildMusicManagers.put(g, new GuildMusicManager(playerManager));
 			g.getAudioManager().setSendingHandler(guildMusicManagers.get(g).sendHandler);
+			guildMusicManagers.get(g).player.setVolume(DEFAULT_VOLUME);
 		}
 		return guildMusicManagers.get(g);
 	}
@@ -111,21 +108,16 @@ public class AudioUtil {
 			if (queue.isEmpty()) {
 				event.reply("The queue is currently empty!");
 			} else {
-				int trackCount = 0;
 				long queueLength = 0;
 				StringBuilder sb = new StringBuilder();
-				/*sb.append("Current Queue: Entries: ").append(queue.size()).append("\n");
+				sb.append("Current Queue: Entries: ").append(queue.size()).append("\n");
 				for (AudioTrack track : queue) {
 					queueLength += track.getDuration();
 					sb.append("`[").append(getTimestamp(track.getDuration())).append("]` ");
 					sb.append(track.getInfo().title).append("\n");
-					trackCount++;
-				}
-				sb.append("\n").append("Total Queue Time Length: ").append(getTimestamp(queueLength));*/
-				for(int i=0;i<20000;i++) {
-					sb.append("f");
 				}
 				event.reply(sb.toString());
+				event.reply("Total Queue Time Length: "+getTimestamp(queueLength));
 			}
 		}
 	}
